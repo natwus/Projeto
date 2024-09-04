@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getCategorias, registerSupplier} from '../../services/authService';
+import { getCategorias, registerSupplier } from '../../services/authService';
 
 function CadastroFornecedor() {
     const [nome, setNome] = useState('');

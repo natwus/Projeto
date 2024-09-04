@@ -42,3 +42,8 @@ export const getCategorias = async () => {
     const response = await fetch(`${BASE_URL}/categorias`);
     return response.json();
 };
+
+export const getFornecedores = async () => {
+    const response = await fetch(`${BASE_URL}/fornecedores`);
+    return response.json()
+}

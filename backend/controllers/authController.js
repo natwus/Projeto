@@ -6,14 +6,14 @@ async function register(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [rows] = await connection.execute('SELECT emailUsuario FROM usuarios WHERE emailUsuario = ?', [email]);
+        const [rows] = await connection.execute('SELECT usuarioUsuario FROM usuario WHERE usuarioUsuario = ?', [email]);
 
         if (rows.length > 0) {
-            return res.status(400).json({ message: 'Erro: Email já cadastrado!' });
+            return res.status(400).json({ message: 'Erro: Usuario já cadastrado!' });
         }
 
         const hashedPassword = await bcrypt.hash(senha, 10);
-        await connection.execute('INSERT INTO usuarios (nomeUsuario, emailUsuario, senhaUsuario) VALUES (?, ?, ?)', [nome, email, hashedPassword]);
+        await connection.execute('INSERT INTO usuario (usuarioNome, usuarioUsuario, usuarioSenha) VALUES (?, ?, ?)', [nome, email, hashedPassword]);
 
         res.status(200).json({ sucess:true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {

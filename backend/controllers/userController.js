@@ -5,10 +5,10 @@ async function getUserName(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [rows] = await connection.execute('SELECT nomeUsuario FROM usuarios WHERE emailUsuario = ?', [email]);
+        const [rows] = await connection.execute('SELECT usuarioNome FROM usuario WHERE usuarioUsuario = ?', [email]);
 
         if (rows.length > 0) {
-            res.status(200).json({ nome: rows[0].nomeUsuario });
+            res.status(200).json({ nome: rows[0].usuarioNome });
         } else {
             res.status(404).json({ message: 'Usuário não encontrado!' });
         }

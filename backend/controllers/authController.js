@@ -27,19 +27,19 @@ async function login(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [rows] = await connection.execute('SELECT nomeUsuario, emailUsuario, senhaUsuario FROM usuarios WHERE emailUsuario = ?', [email]);
+        const [rows] = await connection.execute('SELECT usuarioNome, usuarioUsuario, usuarioSenha FROM usuario WHERE usuarioUsuario = ?', [email]);
 
         if (rows.length === 0) {
             return res.status(401).json({ message: 'Credenciais inválidas!' });
         }
 
         const usuario = rows[0];
-        const senhaValida = await bcrypt.compare(senha, usuario.senhaUsuario);
+        const senhaValida = await bcrypt.compare(senha, usuario.usuarioSenha);
 
         if (senhaValida) {
             return res.status(200).json({
                 message: 'Login bem-sucedido!',
-                usuario: { nome: usuario.nomeUsuario, email: usuario.emailUsuario }
+                usuario: { nome: usuario.usuarioNome, email: usuario.usuarioUsuario }
             });
         } else {
             return res.status(401).json({ message: 'Credenciais inválidas!' });

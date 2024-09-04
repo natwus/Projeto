@@ -5,6 +5,7 @@ const { connectToDatabase } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const errorMiddleware = require('./middleware/errorMiddleware');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 const app = express();
 const PORT = 3001;
@@ -15,6 +16,7 @@ app.use(express.json());
 connectToDatabase().then(() => {
     app.use('/api/auth', authRoutes);
     app.use('/api/user', userRoutes);
+    app.use('/api', categoryRoutes);
 
     app.use(errorMiddleware);
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Cadastro from './components/Cadastro/Cadastro';
+import CadastroUser from './components/Cadastro/cadastroUsuario';
+import CadastroSup from './components/Cadastro/cadastroFornecedor';
 import Login from './components/Login/Login';
 import Inicio from './components/Inicio/Inicio';
 import MFA from './components/MFA/Mfa'; 
@@ -10,7 +11,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Inicio />} />
-                <Route path="/cadastro" element={<Cadastro />} />
+                <Route path="/cadastroUsuario" element={<CadastroUser />} />
+                <Route path="/cadastroFornecedor" element={<CadastroSup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/mfa" element={<MFA />} />
                 <Route path="/home" element={<Home />} />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllSuppliers } from "../../services/authService";
+import { delSup } from '../../services/delService';
 import { Link } from "react-router-dom";
 
 function TabelaFornecedor() {
@@ -18,6 +19,22 @@ function TabelaFornecedor() {
         fetchFornecedores();
     }, []);
 
+    const deletarFornecedor = async (fornecedorID) => {
+        try {
+            await delSup(fornecedorID);
+            alert('Fornecedor excluído com sucesso!');
+            setFornecedores(fornecedores.filter(fornecedor => fornecedor.fornecedorID !== fornecedorID));
+        } catch (error) {
+            const errorMessage = error.message;
+    
+            if (errorMessage.includes('foreign key')) {
+                alert('Erro ao excluir: Este fornecedor está vinculado a outros registros');
+            } else {
+                alert('Erro ao excluir fornecedor');
+            }
+        }
+    };
+
     return (
         <div>
             <h1>Fornecedores Cadastrados</h1>
@@ -30,6 +47,7 @@ function TabelaFornecedor() {
                         <th>Telefone</th>
                         <th>Email</th>
                         <th>Categoria</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +59,11 @@ function TabelaFornecedor() {
                             <td>{fornecedor.fornecedorTelefone}</td>
                             <td>{fornecedor.fornecedorEmail}</td>
                             <td>{fornecedor.nomeCategoria}</td>
+                            <td>
+                                <button onClick={() => deletarFornecedor(fornecedor.fornecedorID)}>
+                                    Excluir
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

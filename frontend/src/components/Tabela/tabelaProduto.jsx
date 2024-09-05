@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../../services/authService";
 import { Link } from "react-router-dom";
+import { delProd } from "../../services/delService";
 
 function TabelaProdutos() {
     const [produtos, setProdutos] = useState([]);
@@ -18,6 +19,17 @@ function TabelaProdutos() {
         fetchProdutos();
     }, []);
 
+    const deletarProduto = async (produtoID) => {
+        try {
+            await delProd(produtoID);
+            alert('Produto excluído com sucesso!');
+            setProdutos(produtos.filter(produto => produto.produtoID !== produtoID));
+        } catch (error) {
+            console.error('Erro ao excluir produto:', error);
+            alert('Erro ao excluir produto');
+        }
+    };
+
     return (
         <div>
             <h1>Produtos Cadastrados</h1>
@@ -30,6 +42,7 @@ function TabelaProdutos() {
                         <th>Preço</th>
                         <th>Imagem</th>
                         <th>Fornecedor</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +60,11 @@ function TabelaProdutos() {
                                 />
                             </td>
                             <td>{produto.fornecedorNome}</td>
+                            <td>
+                                <button onClick={() => deletarProduto(produto.produtoID)}>
+                                    Excluir
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

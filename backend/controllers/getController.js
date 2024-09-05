@@ -62,7 +62,6 @@ async function getProducts(req, res) {
              FROM produto
              JOIN fornecedor ON produto.fornecedorID = fornecedor.fornecedorID`
         );
-        console.log(rows);
         res.status(200).json(rows);
     } catch (error) {
         console.error(error);

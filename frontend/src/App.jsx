@@ -4,6 +4,8 @@ import CadastroUser from './components/Cadastro/cadastroUsuario';
 import CadastroSup from './components/Cadastro/cadastroFornecedor';
 import CadastroProd from './components/Cadastro/cadastroProduto';
 import TabelaUser from './components/Tabela/tabelaUsuario';
+import TabelaSup from './components/Tabela/tabelaFornecedor';
+import TabelaProd from './components/Tabela/tabelaProduto';
 import Login from './components/Login/Login';
 import Inicio from './components/Inicio/Inicio';
 import MFA from './components/MFA/Mfa'; 
@@ -17,6 +19,8 @@ function App() {
                 <Route path="/cadastroFornecedor" element={<CadastroSup />} />
                 <Route path="/cadastroProduto" element={<CadastroProd />} />
                 <Route path="/usuarios" element={<TabelaUser />} />
+                <Route path="/fornecedores" element={<TabelaSup />} />
+                <Route path="/produtos" element={<TabelaProd />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/mfa" element={<MFA />} />
                 <Route path="/home" element={<Home />} />

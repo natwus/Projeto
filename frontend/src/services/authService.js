@@ -70,3 +70,18 @@ export const getUsers = async () => {
     });
     return response.json();
 };
+
+export const getAllSuppliers = async () => {
+    const response = await fetch(`${BASE_URL}/get/suppliers`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.json();
+};
+
+export const getProducts = async () => {
+    const response = await fetch(`${BASE_URL}/get/products`);
+    return response.json();
+};

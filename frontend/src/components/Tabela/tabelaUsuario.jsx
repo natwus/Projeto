@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getUsers } from '../../services/authService';
+import { Link } from 'react-router-dom';
 
 function TabelaUsuario() {
     const [usuarios, setUsuarios] = useState([]);
@@ -38,6 +39,7 @@ function TabelaUsuario() {
                     ))}
                 </tbody>
             </table>
+            <Link to={"/"}>Início</Link>
         </div>
     );
 }

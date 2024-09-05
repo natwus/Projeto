@@ -27,6 +27,6 @@ export const delProd = async (produtoID) => {
         method: 'DELETE',
     });
     if (!response.ok) {
-        throw new Error('Erro ao excluir usuário');
+        throw new Error('Erro ao excluir produto');
     }
 };

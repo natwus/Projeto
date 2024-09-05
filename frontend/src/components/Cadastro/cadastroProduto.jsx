@@ -40,6 +40,11 @@ function CadastroProduto() {
 
             if (data.sucess) {
                 alert('Cadastro realizado!');
+                setNome('');
+                setQuantidade('');
+                setPreco('');
+                setImagem('');
+                setFornecedorSelecionado('');
             } else {
                 alert('Erro: ' + data.message);
             }

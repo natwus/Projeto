@@ -51,12 +51,6 @@ async function registerProduct(req, res) {
     const { nome, quantidade, preco, fornecedorSelecionado } = req.body;
     const imagem = req.file ? req.file.filename : null;
 
-    console.log(nome, quantidade, preco, fornecedorSelecionado)
-
-    if (!nome || !quantidade || !preco || !imagem || !fornecedorSelecionado) {
-        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
-    }
-
     try {
         const [rows] = await connection.execute('SELECT produtoNome FROM produto WHERE produtoNome = ?', [nome]);
 

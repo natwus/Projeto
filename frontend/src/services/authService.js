@@ -42,7 +42,7 @@ export const loginUser = async (email, senha) => {
 };
 
 export const fetchUserName = async (email) => {
-    const response = await fetch(`${BASE_URL}/get/nome?email=${email}`);
+    const response = await fetch(`${BASE_URL}/nome?email=${email}`);
     if (response.ok) {
         return response.json();
     } else {

@@ -31,6 +31,11 @@ function CadastroFornecedor() {
 
             if (data.sucess) {
                 alert('Cadastro realizado!');
+                setNome('');
+                setEstado('');
+                setTelefone('');
+                setEmail('');
+                setCategoriaSelecionada('');
             } else {
                 alert('Erro: ' + data.message);
             }

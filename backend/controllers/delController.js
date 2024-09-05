@@ -1,4 +1,6 @@
 const { connectToDatabase } = require('../config/db');
+const fs = require('fs');
+const path = require('path');
 
 async function deleteUser(req, res) {
     const { id } = req.params;
@@ -51,10 +53,26 @@ async function deleteProduct(req, res) {
     const connection = await connectToDatabase();
 
     try {
+        const [rows] = await connection.execute('SELECT produtoImagem FROM produto WHERE produtoID = ?', [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Produto não encontrado!' });
+        }
+
+        const imageName = rows[0].produtoImagem;
+        const imagePath = path.join(__dirname, '../uploads/', imageName);
+
         const [result] = await connection.execute('DELETE FROM produto WHERE produtoID = ?', [id]);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ success: true, message: 'Produto excluído com sucesso!' });
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error('Erro ao excluir a imagem:', err);
+                    return res.status(500).json({ success: false, message: 'Erro ao excluir a imagem!' });
+                }
+
+                res.status(200).json({ success: true, message: 'Produto e imagem excluídos com sucesso!' });
+            });
         } else {
             res.status(404).json({ success: false, message: 'Produto não encontrado!' });
         }

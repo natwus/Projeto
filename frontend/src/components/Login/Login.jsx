@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { enviarEmail } from "./enviarEmail";
+import { fetchUserName, loginUser } from "../../services/authService";
 
 function Login() {
     const navigate = useNavigate();
@@ -18,10 +19,9 @@ function Login() {
         if (email) {
             const fetchNomeUsuario = async () => {
                 try {
-                    const response = await fetch(`http://localhost:3001/api/user/nome?email=${email}`);
-                    const data = await response.json();
+                    const data = await fetchUserName(email);
     
-                    if (response.ok) {
+                    if (data.nome) {
                         setNome(data.nome);
                     } else {
                         console.error(data.message);
@@ -40,15 +40,9 @@ function Login() {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3001/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, senha }),
-            });
+            const data = await loginUser(email, senha);
 
-            if (response.ok) {
+            if (data.usuario) {
                 alert('Login bem-sucedido!');
                 enviarEmail(nome, codigo, email);
                 navigate('/mfa', { state: { codigo, email } });

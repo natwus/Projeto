@@ -20,4 +20,19 @@ async function getUserName(req, res) {
     }
 }
 
-module.exports = { getUserName };
+async function getUsers(req, res) {
+    const connection = await connectToDatabase();
+
+    try {
+        const [rows] = await connection.execute('SELECT usuarioID, usuarioNome, usuarioUsuario FROM usuario');
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar os usuários:', error);
+        res.status(500).json({ message: 'Erro ao buscar os dados.' });
+    } finally {
+        if (connection) connection.release();
+    }
+}
+
+
+module.exports = { getUserName, getUsers };

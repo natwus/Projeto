@@ -38,12 +38,17 @@ export const loginUser = async (email, senha) => {
         },
         body: JSON.stringify({ email, senha }),
     });
-    return response;
+   return response.json()
 };
 
 export const fetchUserName = async (email) => {
-    const response = await fetch(`${BASE_URL}/user/nome?email=${email}`);
-    return response.json();
+    const response = await fetch(`${BASE_URL}/get/nome?email=${email}`);
+    if (response.ok) {
+        return response.json();
+    } else {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Erro ao buscar o nome do usuário');
+    }
 };
 
 export const getCategorias = async () => {
@@ -54,4 +59,14 @@ export const getCategorias = async () => {
 export const getFornecedores = async () => {
     const response = await fetch(`${BASE_URL}/fornecedores`);
     return response.json()
-}
+};
+
+export const getUsers = async () => {
+    const response = await fetch(`${BASE_URL}/get/users`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.json();
+};

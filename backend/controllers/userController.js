@@ -15,6 +15,8 @@ async function getUserName(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao consultar os dados.' });
+    } finally {
+        if (connection) connection.release();
     }
 }
 

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getFornecedores, registerSupplier } from '../../services/authService';
+import { getFornecedores, registerProduct } from '../../services/authService';
 
 function CadastroProduto() {
     const [nome, setNome] = useState('');
     const [quantidade, setQuantidade] = useState('');
     const [preco, setPreco] = useState('');
-    const [imagem, setImagem] = useState('');
+    const [imagem, setImagem] = useState(null);
     const [fornecedor, setFornecedor] = useState([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState('');
 
@@ -23,27 +23,35 @@ function CadastroProduto() {
         fetchFornecedores();
     }, []);
 
-    // const enviarDados = async (event) => {
-    //     event.preventDefault();
+    const enviarDados = async (event) => {
+        event.preventDefault();
 
-    //     try {
-    //         const data = await registerSupplier(nome, estado, telefone, email, categoriaSelecionada);
+        const formData = new FormData();
+        formData.append('nome', nome);
+        formData.append('quantidade', quantidade);
+        formData.append('preco', preco);
+        formData.append('imagem', imagem);
+        formData.append('fornecedorSelecionado', fornecedorSelecionado);
 
-    //         if (data.sucess) {
-    //             alert('Cadastro realizado!');
-    //         } else {
-    //             alert('Erro: ' + data.message);
-    //         }
-    //     } catch (error) {
-    //         console.error('Erro ao enviar os dados:', error);
-    //     }
-    // };
+        console.log(nome, quantidade, preco, imagem, fornecedorSelecionado)
+
+        try {
+            const data = await registerProduct(formData);
+
+            if (data.sucess) {
+                alert('Cadastro realizado!');
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Erro ao enviar os dados:', error);
+        }
+    };
 
     return (
         <div>
             <h1>Cadastro Produto</h1>
-            {/* onSubmit={enviarDados} */}
-            <form >
+            <form onSubmit={enviarDados}>
                 <label>Nome</label>
                 <input
                     type="text"
@@ -69,8 +77,7 @@ function CadastroProduto() {
                 <input
                     type="file"
                     name="imagem"
-                    value={imagem}
-                    onChange={(e) => setImagem(e.target.value)}
+                    onChange={(e) => setImagem(e.target.files[0])}
                 />
                 <label>Fornecedor</label>
                 <select

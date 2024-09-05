@@ -10,7 +10,7 @@ async function getCategorias(req, res) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao buscar categorias.' });
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 }
 
@@ -24,7 +24,7 @@ async function getFornecedores(req, res) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao buscar categorias.' });
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 }
 

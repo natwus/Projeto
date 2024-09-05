@@ -22,6 +22,14 @@ export const registerSupplier = async (nome, estado, telefone, email, categoriaS
     return response.json();
 };
 
+export const registerProduct = async (formData) => {
+    const response = await fetch(`${BASE_URL}/auth/registerProduct`, {
+        method: 'POST',
+        body: formData,
+    });
+    return response.json();
+};
+
 export const loginUser = async (email, senha) => {
     const response = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',

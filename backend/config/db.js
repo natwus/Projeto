@@ -1,22 +1,17 @@
 const mysql = require('mysql2/promise');
 
-let connection;
+const pool = mysql.createPool({
+    host: process.env.db_host,
+    user: process.env.db_user,
+    password: process.env.db_password,
+    database: process.env.db_database,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 async function connectToDatabase() {
-    if (!connection) {
-        const DBhost = process.env.db_host;
-        const DBuser = process.env.db_user;
-        const DBpassword = process.env.db_password;
-        const DBdatabase = process.env.db_database;
-
-        connection = await mysql.createConnection({
-            host: DBhost,
-            user: DBuser,
-            password: DBpassword,
-            database: DBdatabase
-        });
-    }
-    return connection;
+    return pool.getConnection(); // Retorna uma conexão do pool
 }
 
 module.exports = { connectToDatabase };

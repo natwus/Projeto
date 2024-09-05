@@ -19,6 +19,8 @@ async function register(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao salvar os dados.' });
+    } finally {
+        if (connection) connection.release();
     }
 }
 
@@ -39,6 +41,40 @@ async function registerSupplier(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao salvar os dados.' });
+    } finally {
+        if (connection) connection.release();
+    }
+}
+
+async function registerProduct(req, res) {
+    const connection = await connectToDatabase();
+    const { nome, quantidade, preco, fornecedorSelecionado } = req.body;
+    const imagem = req.file ? req.file.filename : null;
+
+    console.log(nome, quantidade, preco, fornecedorSelecionado)
+
+    if (!nome || !quantidade || !preco || !imagem || !fornecedorSelecionado) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    try {
+        const [rows] = await connection.execute('SELECT produtoNome FROM produto WHERE produtoNome = ?', [nome]);
+
+        if (rows.length > 0) {
+            return res.status(400).json({ message: 'Erro: Produto já cadastrado!' });
+        }
+
+        await connection.execute(
+            'INSERT INTO produto (produtoNome, produtoQuantidade, produtoPreco, produtoImagem, fornecedorID) VALUES (?, ?, ?, ?, ?)',
+            [nome, quantidade, preco, imagem, fornecedorSelecionado]
+        );
+
+        res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao salvar os dados.' });
+    } finally {
+        if (connection) connection.release();
     }
 }
 
@@ -67,7 +103,9 @@ async function login(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro no servidor!' });
+    } finally {
+        if (connection) connection.release();
     }
 }
 
-module.exports = { register, registerSupplier, login };
+module.exports = { register, registerSupplier, registerProduct, login };

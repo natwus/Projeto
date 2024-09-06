@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getFornecedores, registerProduct } from '../../services/authService';
 
 function CadastroProduto() {
@@ -9,6 +9,16 @@ function CadastroProduto() {
     const [imagem, setImagem] = useState(null);
     const [fornecedor, setFornecedor] = useState([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if (!token) {
+            alert('Você precisa estar logado!')
+            navigate('/'); 
+        }
+    }, [navigate]);
 
     useEffect(() => {
         const fetchFornecedores = async () => {
@@ -40,11 +50,7 @@ function CadastroProduto() {
 
             if (data.sucess) {
                 alert('Cadastro realizado!');
-                setNome('');
-                setQuantidade('');
-                setPreco('');
-                setImagem('');
-                setFornecedorSelecionado('');
+                navigate('/produtos');
             } else {
                 alert('Erro: ' + data.message);
             }
@@ -99,7 +105,7 @@ function CadastroProduto() {
                 </select>
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to={"/"}>Início</Link>
+            <Link to={"/inicio"}>Início</Link>
         </div>
     );
 }

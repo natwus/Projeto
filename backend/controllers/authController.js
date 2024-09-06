@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const { connectToDatabase } = require('../config/db');
+const jwt = require('jsonwebtoken');
+const secretKey = process.env.JWT_SECRET
 
 async function register(req, res) {
     const { nome, email, senha } = req.body;
@@ -87,9 +89,16 @@ async function login(req, res) {
         const senhaValida = await bcrypt.compare(senha, usuario.usuarioSenha);
 
         if (senhaValida) {
+            const token = jwt.sign(
+                { id: usuario.usuarioUsuario, nome: usuario.usuarioNome }, 
+                secretKey, 
+                { expiresIn: '1h' }
+            );
+
             return res.status(200).json({
                 message: 'Login bem-sucedido!',
-                usuario: { nome: usuario.usuarioNome, email: usuario.usuarioUsuario }
+                usuario: { nome: usuario.usuarioNome, email: usuario.usuarioUsuario },
+                token
             });
         } else {
             return res.status(401).json({ message: 'Credenciais inválidas!' });

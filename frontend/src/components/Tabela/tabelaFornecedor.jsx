@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 import { getAllSuppliers } from "../../services/authService";
 import { delSup } from '../../services/delService';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function TabelaFornecedor() {
     const [fornecedores, setFornecedores] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if (!token) {
+            alert('Você precisa estar logado!')
+            navigate('/'); 
+        }
+    }, [navigate]);
 
     useEffect(() => {
         const fetchFornecedores = async () => {
@@ -68,7 +78,7 @@ function TabelaFornecedor() {
                     ))}
                 </tbody>
             </table>
-            <Link to="/">Voltar ao Início</Link>
+            <Link to="/inicio">Voltar ao Início</Link>
         </div>
     );
 }

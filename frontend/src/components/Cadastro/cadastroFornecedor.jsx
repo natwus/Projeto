@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCategorias, registerSupplier } from '../../services/authService';
 
 function CadastroFornecedor() {
@@ -9,6 +9,16 @@ function CadastroFornecedor() {
     const [email, setEmail] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if (!token) {
+            alert('Você precisa estar logado!')
+            navigate('/'); 
+        }
+    }, [navigate]);
 
     useEffect(() => {
         const fetchCategorias = async () => {
@@ -31,11 +41,7 @@ function CadastroFornecedor() {
 
             if (data.sucess) {
                 alert('Cadastro realizado!');
-                setNome('');
-                setEstado('');
-                setTelefone('');
-                setEmail('');
-                setCategoriaSelecionada('');
+                navigate('/fornecedores')
             } else {
                 alert('Erro: ' + data.message);
             }
@@ -91,7 +97,7 @@ function CadastroFornecedor() {
                 </select>
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to={"/"}>Início</Link>
+            <Link to={"/inicio"}>Início</Link>
         </div>
     );
 }

@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
 import { getUsers } from '../../services/authService';
 import { delUser } from '../../services/delService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function TabelaUsuario() {
     const [usuarios, setUsuarios] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if (!token) {
+            alert('Você precisa estar logado!')
+            navigate('/');
+        }
+    }, [navigate]);
 
     useEffect(() => {
         async function fetchUsuarios() {
@@ -57,7 +67,7 @@ function TabelaUsuario() {
                     ))}
                 </tbody>
             </table>
-            <Link to={"/"}>Início</Link>
+            <Link to={"/inicio"}>Início</Link>
         </div>
     );
 }

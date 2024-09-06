@@ -38,7 +38,13 @@ export const loginUser = async (email, senha) => {
         },
         body: JSON.stringify({ email, senha }),
     });
-   return response.json()
+    const data = await response.json();
+
+    if (response.ok) {
+        localStorage.setItem('token', data.token);
+        return data;
+    }
+
 };
 
 export const fetchUserName = async (email) => {
@@ -85,3 +91,16 @@ export const getProducts = async () => {
     const response = await fetch(`${BASE_URL}/get/products`);
     return response.json();
 };
+
+// export const getDadosProtegidos = async () => {
+//     const token = localStorage.getItem('token');
+
+//     const response = await fetch(`${BASE_URL}/auth/dadosProtegidos`, {
+//         method: 'GET',
+//         headers: {
+//             'Authorization': token, // Adiciona o token ao cabeçalho
+//         },
+//     });
+
+//     return response.json();
+// }; EXEMPLO DE REQUISIÇÂO AUTENTICADA

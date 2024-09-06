@@ -8,6 +8,10 @@ function Cadastro() {
     const [nome, setNome] = useState('');
     const navigate = useNavigate();
 
+    const handleVoltar = () => {
+        navigate(-1); 
+    };
+
     const enviarDados = async (event) => {
         event.preventDefault();
 
@@ -27,7 +31,7 @@ function Cadastro() {
 
     return (
         <div>
-            <h1>Cadastro</h1>
+            <h1>Cadastro Usuario</h1>
             <form onSubmit={enviarDados}>
                 <label>Nome</label>
                 <input
@@ -52,8 +56,8 @@ function Cadastro() {
                 />
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to={"/login"}>Já tem cadastro? </Link>
-            <Link to={"/"}>Início</Link>
+            <Link to={"/"}>Já tem cadastro? </Link>
+            <button onClick={handleVoltar}>Voltar</button>
         </div>
     );
 }

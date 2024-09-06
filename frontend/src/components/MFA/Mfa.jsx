@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function MFA() {
     const navigate = useNavigate();
@@ -30,6 +30,7 @@ function MFA() {
                 />
                 <button type="submit">Verificar Código</button>
             </form>
+            <Link to={'/inicio'}>vai</Link>
         </div>
     );
 }

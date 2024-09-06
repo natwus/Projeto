@@ -9,6 +9,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [codigo, setCodigo] = useState('');
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     useEffect(() => {
         const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -34,8 +35,13 @@ function Login() {
             fetchNomeUsuario();
         }
     }, [email]);
-    
 
+    useEffect(() => {
+        if (loginSuccess) {
+            navigate('/mfa', { state: { codigo, email } });
+        }
+    }, [loginSuccess, navigate, codigo, email]);
+    
     const handleLogin = async (event) => {
         event.preventDefault();
 
@@ -45,7 +51,7 @@ function Login() {
             if (data.usuario) {
                 alert('Login bem-sucedido!');
                 enviarEmail(nome, codigo, email);
-                navigate('/mfa', { state: { codigo, email } });
+                setLoginSuccess(true);
             } else {
                 alert('Email ou senha incorretos!');
             }
@@ -74,8 +80,7 @@ function Login() {
                 />
                 <button type="submit">Entrar</button>
             </form>
-            <Link to={"/cadastro"}>Não tem cadastro? </Link>
-            <Link to={"/"}>Início</Link>
+            <Link to={"/cadastroUsuario"}>Não tem cadastro? </Link>
         </>
     );
 }

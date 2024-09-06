@@ -44,7 +44,6 @@ function Login() {
 
             if (data.usuario) {
                 alert('Login bem-sucedido!');
-                localStorage.setItem('token', data.token);
                 enviarEmail(nome, codigo, email);
                 navigate('/mfa', { state: { codigo, email } });
             } else {

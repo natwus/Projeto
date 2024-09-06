@@ -38,6 +38,11 @@ export const loginUser = async (email, senha) => {
         },
         body: JSON.stringify({ email, senha }),
     });
+
+    if (!response.ok) {
+        throw new Error('Login falhou!');
+    }
+    
    return response.json()
 };
 

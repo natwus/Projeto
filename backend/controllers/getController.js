@@ -14,6 +14,26 @@ async function getUsers(req, res) {
     }
 }
 
+async function getUserById(req, res) {
+    const { id } = req.params;
+    const connection = await connectToDatabase();
+
+    try {
+        const [rows] = await connection.execute('SELECT * FROM usuario WHERE usuarioID = ?', [id]);
+
+        if (rows.length > 0) {
+            res.status(200).json(rows[0]);
+        } else {
+            res.status(404).json({ success: false, message: 'Usuário não encontrado!' });
+        }
+    } catch (error) {
+        console.error('Erro ao buscar usuário:', error);
+        res.status(500).json({ success: false, message: 'Erro ao buscar usuário!' });
+    } finally {
+        if (connection) connection.release();
+    }
+}
+
 async function getSuppliers(req, res) {
     const connection = await connectToDatabase();
 
@@ -52,4 +72,4 @@ async function getProducts(req, res) {
 }
 
 
-module.exports = { getUsers, getSuppliers, getProducts };
+module.exports = { getUsers, getSuppliers, getProducts, getUserById };

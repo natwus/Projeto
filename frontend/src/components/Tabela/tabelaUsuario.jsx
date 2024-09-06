@@ -52,6 +52,9 @@ function TabelaUsuario() {
                                 <button onClick={() => deletarUsuario(usuario.usuarioID)}>
                                     Excluir
                                 </button>
+                                <Link to={`/alterarUsuario/${usuario.usuarioID}`}>
+                                    <button>Alterar</button>
+                                </Link>
                             </td>
                         </tr>
                     ))}

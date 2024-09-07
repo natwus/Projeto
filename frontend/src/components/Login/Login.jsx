@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { enviarEmail } from "./enviarEmail";
-import { fetchUserName, loginUser } from "../../services/authService";
+import { fetchUserName, loginUser } from "../../services/userService";
 
 function Login() {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from '../../services/authService';
+import { registerUser } from '../../services/userService';
 
 function Cadastro() {
     const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ function Cadastro() {
 
             if (data.sucess) {
                 alert('Cadastro realizado!');
-                navigate('/login');
+                navigate('/');
             } else {
                 alert('Erro: ' + data.message);
             }

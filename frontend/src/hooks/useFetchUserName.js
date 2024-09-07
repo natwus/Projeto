@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchUserName } from '../services/authService';
+import { fetchUserName } from '../services/userService';
 
 const useFetchUserName = (email) => {
     const [nome, setNome] = useState('');

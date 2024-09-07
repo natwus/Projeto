@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllSuppliers } from "../../services/authService";
-import { delSup } from '../../services/delService';
+import { getAllSuppliers, delSupplier } from "../../services/supplierService";
 import { Link, useNavigate } from "react-router-dom";
 
 function TabelaFornecedor() {
@@ -31,7 +30,7 @@ function TabelaFornecedor() {
 
     const deletarFornecedor = async (fornecedorID) => {
         try {
-            await delSup(fornecedorID);
+            await delSupplier(fornecedorID);
             alert('Fornecedor excluído com sucesso!');
             setFornecedores(fornecedores.filter(fornecedor => fornecedor.fornecedorID !== fornecedorID));
         } catch (error) {

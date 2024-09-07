@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../../services/authService";
+import { getProducts, delProduct } from "../../services/productService";
 import { Link, useNavigate } from "react-router-dom";
-import { delProd } from "../../services/delService";
 
 function TabelaProdutos() {
     const [produtos, setProdutos] = useState([]);
@@ -31,7 +30,7 @@ function TabelaProdutos() {
 
     const deletarProduto = async (produtoID) => {
         try {
-            await delProd(produtoID);
+            await delProduct(produtoID);
             alert('Produto excluído com sucesso!');
             setProdutos(produtos.filter(produto => produto.produtoID !== produtoID));
         } catch (error) {

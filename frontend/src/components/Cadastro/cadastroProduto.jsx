@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getFornecedores, registerProduct } from '../../services/authService';
+import { getFornecedores } from '../../services/supplierService'
+import { registerProduct } from '../../services/productService'
 
 function CadastroProduto() {
     const [nome, setNome] = useState('');

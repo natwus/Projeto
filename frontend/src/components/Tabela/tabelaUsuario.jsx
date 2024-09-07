@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getUsers } from '../../services/authService';
-import { delUser } from '../../services/delService';
+import { getUsers, delUser } from '../../services/userService';
 import { Link, useNavigate } from 'react-router-dom';
 
 function TabelaUsuario() {

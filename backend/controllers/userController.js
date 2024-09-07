@@ -17,7 +17,7 @@ async function registerUser(req, res) {
         const hashedPassword = await bcrypt.hash(senha, 10);
         await connection.execute('INSERT INTO usuario (usuarioNome, usuarioUsuario, usuarioSenha) VALUES (?, ?, ?)', [nome, email, hashedPassword]);
 
-        res.status(200).json({ sucess:true, message: 'Cadastro realizado com sucesso!' });
+        res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao salvar os dados.' });
@@ -42,8 +42,8 @@ async function loginUser(req, res) {
 
         if (senhaValida) {
             const token = jwt.sign(
-                { id: usuario.usuarioUsuario, nome: usuario.usuarioNome }, 
-                secretKey, 
+                { id: usuario.usuarioUsuario, nome: usuario.usuarioNome },
+                secretKey,
                 { expiresIn: '12h' }
             );
 
@@ -67,7 +67,7 @@ async function getUsers(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [rows] = await connection.execute('SELECT usuarioID, usuarioNome, usuarioUsuario FROM usuario');
+        const [rows] = await connection.execute('SELECT usuarioID, usuarioNome, usuarioUsuario, usuarioSenha FROM usuario');
         res.status(200).json(rows);
     } catch (error) {
         console.error('Erro ao buscar os usuários:', error);
@@ -97,6 +97,37 @@ async function getUserName(req, res) {
     }
 };
 
+async function updateUser(req, res) {
+    const { usuarioID, nome, email, senha } = req.body;
+    const connection = await connectToDatabase();
+
+    try {
+        let query, params;
+
+        if (senha) {
+            const hashedPassword = await bcrypt.hash(senha, 10);
+            query = 'UPDATE usuario SET usuarioNome = ?, usuarioUsuario = ?, usuarioSenha = ? WHERE usuarioID = ?';
+            params = [nome, email, hashedPassword, usuarioID];
+        } else {
+            query = 'UPDATE usuario SET usuarioNome = ?, usuarioUsuario = ? WHERE usuarioID = ?';
+            params = [nome, email, usuarioID];
+        }
+
+        const [result] = await connection.execute(query, params);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Usuário atualizado com sucesso' });
+        } else {
+            res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar o usuário:', error);
+        res.status(500).json({ message: 'Erro no servidor ao atualizar o usuário' });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
 async function deleteUser(req, res) {
     const { id } = req.params;
     const connection = await connectToDatabase();
@@ -117,4 +148,4 @@ async function deleteUser(req, res) {
     }
 };
 
-module.exports = { registerUser, loginUser, getUsers, getUserName, deleteUser };
+module.exports = { registerUser, loginUser, getUsers, getUserName, updateUser, deleteUser };

@@ -50,6 +50,25 @@ export const getUsers = async () => {
     return response.json();
 };
 
+export const updateUser = async (usuarioID, nome, email, senha) => {
+    const body = {
+        usuarioID,
+        nome,
+        email,
+        ...(senha && { senha })
+    };
+
+    const response = await fetch(`${BASE_URL}/user/updateUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    return response.json();
+};
+
 export const delUser = async (userID) => {
     const response = await fetch(`${BASE_URL}/user/deleteUser/${userID}`, {
         method: 'DELETE',

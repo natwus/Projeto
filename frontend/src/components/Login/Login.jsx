@@ -41,6 +41,10 @@ function Login() {
             navigate('/mfa', { state: { codigo, email } });
         }
     }, [loginSuccess, navigate, codigo, email]);
+
+    const handleVoltar = () => {
+        navigate(-1); 
+    };
     
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -81,6 +85,7 @@ function Login() {
                 <button type="submit">Entrar</button>
             </form>
             <Link to={"/cadastroUsuario"}>Não tem cadastro? </Link>
+            <button onClick={handleVoltar}>Voltar</button>
         </>
     );
 }

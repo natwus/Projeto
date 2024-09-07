@@ -24,6 +24,8 @@ export const loginUser = async (email, senha) => {
     if (response.ok) {
         localStorage.setItem('token', data.token);
         return data;
+    } else {
+        return { error: 'Invalid credentials' };
     }
 
 };

@@ -1,19 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getUsers, delUser } from '../../services/userService';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import useSessionTimeout from '../../hooks/useSessionTimeout';
 
 function TabelaUsuario() {
     const [usuarios, setUsuarios] = useState([]);
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-    
-        if (!token) {
-            alert('Você precisa estar logado!')
-            navigate('/');
-        }
-    }, [navigate]);
+    useSessionTimeout();
 
     useEffect(() => {
         async function fetchUsuarios() {

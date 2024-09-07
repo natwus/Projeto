@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCategorias, registerSupplier } from '../../services/supplierService';
-
+import useSessionTimeout from "../../hooks/useSessionTimeout";
 
 function CadastroFornecedor() {
     const [nome, setNome] = useState('');
@@ -12,14 +12,7 @@ function CadastroFornecedor() {
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-    
-        if (!token) {
-            alert('Você precisa estar logado!')
-            navigate('/'); 
-        }
-    }, [navigate]);
+    useSessionTimeout();
 
     useEffect(() => {
         const fetchCategorias = async () => {

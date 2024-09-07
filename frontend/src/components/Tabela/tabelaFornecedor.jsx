@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { getAllSuppliers, delSupplier } from "../../services/supplierService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useSessionTimeout from "../../hooks/useSessionTimeout";
 
 function TabelaFornecedor() {
     const [fornecedores, setFornecedores] = useState([]);
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-    
-        if (!token) {
-            alert('Você precisa estar logado!')
-            navigate('/'); 
-        }
-    }, [navigate]);
+    useSessionTimeout();
 
     useEffect(() => {
         const fetchFornecedores = async () => {

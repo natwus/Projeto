@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { getProducts, delProduct } from "../../services/productService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useSessionTimeout from "../../hooks/useSessionTimeout";
 
 function TabelaProdutos() {
     const [produtos, setProdutos] = useState([]);
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-    
-        if (!token) {
-            alert('Você precisa estar logado!')
-            navigate('/'); 
-        }
-    }, [navigate]);
+    useSessionTimeout();
 
     useEffect(() => {
         const fetchProdutos = async () => {

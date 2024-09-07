@@ -8,8 +8,7 @@ import TabelaSup from './components/Tabela/tabelaFornecedor';
 import TabelaProd from './components/Tabela/tabelaProduto';
 import Login from './components/Login/Login';
 import Inicio from './components/Inicio/Inicio';
-import MFA from './components/MFA/Mfa'; 
-import Home from './components/Home/Home';                                                                                                                                                                                                                        
+import MFA from './components/MFA/Mfa';                                                                                                                                                                                                                        
 function App() {
     return (
         <BrowserRouter>
@@ -23,7 +22,6 @@ function App() {
                 <Route path="/fornecedores" element={<TabelaSup />} />
                 <Route path="/produtos" element={<TabelaProd />} />
                 <Route path="/mfa" element={<MFA />} />
-                <Route path="/home" element={<Home />} />
             </Routes>
         </BrowserRouter>
     );

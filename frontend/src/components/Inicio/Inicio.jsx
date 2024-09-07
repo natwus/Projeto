@@ -1,18 +1,11 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import useSessionTimeout from '../../hooks/useSessionTimeout';
 
 function Inicio() {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
     
-        if (!token) {
-            alert('Você precisa estar logado!');
-            navigate('/'); 
-        }
-    }, [navigate]);
+    useSessionTimeout();
 
     const handleLogoff = () => {
         localStorage.removeItem('token');

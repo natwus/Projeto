@@ -94,7 +94,7 @@ function CadastroProduto() {
                     <option value="">Selecione um fornecedor</option>
                     {fornecedor.map((fornecedor) => (
                         <option key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
-                            {fornecedor.fornecedorNome}
+                            {fornecedor.fornecedorNome} - {fornecedor.nomeCategoria}
                         </option>
                     ))}
                 </select>

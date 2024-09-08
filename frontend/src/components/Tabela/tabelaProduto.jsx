@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getProducts, delProduct } from "../../services/productService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSessionTimeout from "../../hooks/useSessionTimeout";
 
 function TabelaProdutos() {
     const [produtos, setProdutos] = useState([]);
+    const navigate = useNavigate();
 
     useSessionTimeout();
 
@@ -31,6 +32,10 @@ function TabelaProdutos() {
             alert('Erro ao excluir produto');
         }
     };
+
+    const editarProduto = (produtoID, produtoNome, produtoQuantidade, produtoPreco, fornecedorNome, fornecedorID) => {
+        navigate('/alterarProduto', { state: { produtoID, produtoNome, produtoQuantidade, produtoPreco, fornecedorNome, fornecedorID } });
+    }
 
     return (
         <div>
@@ -65,6 +70,9 @@ function TabelaProdutos() {
                             <td>
                                 <button onClick={() => deletarProduto(produto.produtoID)}>
                                     Excluir
+                                </button>
+                                <button onClick={() => editarProduto(produto.produtoID, produto.produtoNome, produto.produtoQuantidade, produto.produtoPreco, produto.produtoImagem, produto.fornecedorNome, produto.fornecedorID)}>
+                                    Editar
                                 </button>
                             </td>
                         </tr>

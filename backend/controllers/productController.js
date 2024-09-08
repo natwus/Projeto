@@ -64,13 +64,17 @@ async function deleteProduct(req, res) {
     }
 };
 
+//updateproducts: if (imagem) select from produto where produtoImagem = id alterado const imageName = rows[0].produtoImagem; const imagePath = path.join(__dirname, '../uploads/', imageName);
+
+        const [result] = await connection.execute('DELETE FROM produto WHERE produtoID = ?', [id]);
+
 async function getProducts(req, res) {
     const connection = await connectToDatabase();
 
     try {
         const [rows] = await connection.execute(
             `SELECT produto.produtoID, produto.produtoNome, produto.produtoQuantidade, 
-                    produto.produtoPreco, produto.produtoImagem, fornecedor.fornecedorNome
+                    produto.produtoPreco, produto.produtoImagem, fornecedor.fornecedorNome, fornecedor.fornecedorID
              FROM produto
              JOIN fornecedor ON produto.fornecedorID = fornecedor.fornecedorID`
         );

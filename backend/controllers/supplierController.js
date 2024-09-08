@@ -95,7 +95,7 @@ async function getFornecedores(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [rows] = await connection.execute('SELECT fornecedorID, fornecedorNome FROM fornecedor');
+        const [rows] = await connection.execute('SELECT fornecedor.fornecedorID, fornecedor.fornecedorNome, fornecedor.idCategoria, categoria.idCategoria, categoria.nomeCategoria FROM fornecedor JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria ');
         res.status(200).json(rows);
     } catch (error) {
         console.error(error);

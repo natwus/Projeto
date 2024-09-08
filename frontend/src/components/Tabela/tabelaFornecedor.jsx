@@ -62,7 +62,7 @@ function TabelaFornecedor() {
                         <tr key={index}>
                             <td>{fornecedor.fornecedorID}</td>
                             <td>{fornecedor.fornecedorNome}</td>
-                            <td>{fornecedor.fornecedorEstado}</td>
+                            <td>{fornecedor.fornecedorEstado}</td> 
                             <td>{fornecedor.fornecedorTelefone}</td>
                             <td>{fornecedor.fornecedorEmail}</td>
                             <td>{fornecedor.nomeCategoria}</td>

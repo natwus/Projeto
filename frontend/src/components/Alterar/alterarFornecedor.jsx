@@ -7,7 +7,6 @@ function EditarFornecedor() {
     const navigate = useNavigate();
     const location = useLocation();
     const { fornecedorID, fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria } = location.state || {};
-    
     const [nome, setNome] = useState(fornecedorNome || '');
     const [estado, setEstado] = useState(fornecedorEstado || '');
     const [telefone, setTelefone] = useState(fornecedorTelefone || '');

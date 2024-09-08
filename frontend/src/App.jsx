@@ -8,6 +8,7 @@ import TabelaSup from './components/Tabela/tabelaFornecedor';
 import TabelaProd from './components/Tabela/tabelaProduto';
 import AlterarUser from './components/Alterar/alterarUsuario';
 import AlterarSup from './components/Alterar/alterarFornecedor';
+import AlterarProd from './components/Alterar/alterarProduto';
 import Login from './components/Login/Login';
 import Inicio from './components/Inicio/Inicio';
 import MFA from './components/MFA/Mfa';                                                                                                                                                                                                                        
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/produtos" element={<TabelaProd />} />
                 <Route path="/alterarUsuario" element={<AlterarUser />} />
                 <Route path="/alterarFornecedor" element={<AlterarSup />} />
+                <Route path="/alterarProduto" element={<AlterarProd />} />
                 <Route path="/mfa" element={<MFA />} />
             </Routes>
         </BrowserRouter>

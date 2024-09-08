@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getFornecedores, updateSupplier } from '../../services/supplierService';
+import { getFornecedores } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
+import { updateProduct } from '../../services/productService';
 
 function EditarFornecedor() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function EditarFornecedor() {
         setPreco(produtoPreco || '');
         setImagem('');
         setFornecedorSelecionado(fornecedorID || '');
-        console.log(produtoID, produtoNome, produtoQuantidade, produtoPreco, fornecedorID);
+        console.log(nome, quantidade, preco, fornecedorSelecionado);
     }, [produtoNome, produtoQuantidade, produtoPreco, fornecedorID]);
 
     useEffect(() => {
@@ -45,7 +46,7 @@ function EditarFornecedor() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateSupplier(produtoID, nome, quantidade, preco, imagem, fornecedorSelecionado);
+            await updateProduct(produtoID, nome, quantidade, preco, imagem, fornecedorSelecionado || undefined);
             alert('Produto atualizado com sucesso!');
             navigate('/produtos');
         } catch (error) {
@@ -88,11 +89,11 @@ function EditarFornecedor() {
                 />
                 <label>Fornecedor</label>
                 <select
-                    name="categoria"
+                    name="fornecedor"
                     value={fornecedorSelecionado}
                     onChange={(e) => setFornecedorSelecionado(e.target.value)}
                 >
-                    <option value="">Selecione uma fornecedor</option>
+                    <option value="">Selecione um fornecedor</option>
                     {fornecedores.map((fornecedor) => (
                         <option key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
                             {fornecedor.fornecedorNome}- {fornecedor.nomeCategoria}

@@ -71,7 +71,7 @@ function TabelaProdutos() {
                                 <button onClick={() => deletarProduto(produto.produtoID)}>
                                     Excluir
                                 </button>
-                                <button onClick={() => editarProduto(produto.produtoID, produto.produtoNome, produto.produtoQuantidade, produto.produtoPreco, produto.produtoImagem, produto.fornecedorNome, produto.fornecedorID)}>
+                                <button onClick={() => editarProduto(produto.produtoID, produto.produtoNome, produto.produtoQuantidade, produto.produtoPreco, produto.produtoImagem, produto.fornecedorNome, produto.fornecedorID,)}>
                                     Editar
                                 </button>
                             </td>

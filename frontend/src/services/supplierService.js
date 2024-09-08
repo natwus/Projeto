@@ -31,6 +31,22 @@ export const getCategorias = async () => {
     return response.json();
 };
 
+export const updateSupplier = async (fornecedorID, nome, estado, telefone, email, categoriaSelecionada) => {
+    const body = {
+        fornecedorID, nome, estado, telefone, email, categoriaSelecionada
+    };
+
+    const response = await fetch(`${BASE_URL}/supplier/updateSupplier`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    return response.json();
+};
+
 export const delSupplier = async (fornecedorID) => {
     const response = await fetch(`${BASE_URL}/supplier/deleteSupplier/${fornecedorID}`, {
         method: 'DELETE',

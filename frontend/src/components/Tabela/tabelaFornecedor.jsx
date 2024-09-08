@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getAllSuppliers, delSupplier } from "../../services/supplierService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSessionTimeout from "../../hooks/useSessionTimeout";
 
 function TabelaFornecedor() {
     const [fornecedores, setFornecedores] = useState([]);
+    const navigate = useNavigate();
 
     useSessionTimeout();
 
@@ -37,6 +38,10 @@ function TabelaFornecedor() {
         }
     };
 
+    const editarFornecedor = (fornecedorID, fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria, nomeCategoria) => {
+        navigate('/alterarFornecedor', { state: { fornecedorID, fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria, nomeCategoria } });
+    }
+
     return (
         <div>
             <h1>Fornecedores Cadastrados</h1>
@@ -64,6 +69,9 @@ function TabelaFornecedor() {
                             <td>
                                 <button onClick={() => deletarFornecedor(fornecedor.fornecedorID)}>
                                     Excluir
+                                </button>
+                                <button onClick={() => editarFornecedor(fornecedor.fornecedorID, fornecedor.fornecedorNome,fornecedor.fornecedorEstado, fornecedor.fornecedorTelefone, fornecedor.fornecedorEmail, fornecedor.idCategoria, fornecedor.nomeCategoria)}>
+                                    Editar
                                 </button>
                             </td>
                         </tr>

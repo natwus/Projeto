@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { updateUser } from '../../services/userService';
+import useSessionTimeout from '../../hooks/useSessionTimeout';
 
 function EditarUsuario() {
     const navigate = useNavigate();
@@ -9,6 +10,8 @@ function EditarUsuario() {
     const [nome, setNome] = useState(usuarioNome || '');
     const [email, setEmail] = useState(usuarioUsuario || '');
     const [senha, setSenha] = useState('');
+
+    useSessionTimeout();
 
     useEffect(() => {
         setNome(usuarioNome || '');

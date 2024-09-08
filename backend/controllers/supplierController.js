@@ -13,7 +13,7 @@ async function registerSupplier(req, res) {
 
         await connection.execute('INSERT INTO fornecedor (fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria) VALUES (?, ?, ?, ?, ?)', [nome, estado, telefone, email, categoriaSelecionada]);
 
-        res.status(200).json({ sucess:true, message: 'Cadastro realizado com sucesso!' });
+        res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao salvar os dados.' });
@@ -27,7 +27,7 @@ async function getSuppliers(req, res) {
 
     try {
         const [rows] = await connection.execute(
-            `SELECT fornecedor.*, categoria.nomeCategoria 
+            `SELECT fornecedor.*, categoria.idCategoria, categoria.nomeCategoria 
              FROM fornecedor 
              JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria`
         );
@@ -35,6 +35,31 @@ async function getSuppliers(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erro ao buscar fornecedores." });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+async function updateSuppliers(req, res) {
+    const { fornecedorID, nome, estado, telefone, email, categoriaSelecionada } = req.body;
+    const connection = await connectToDatabase();
+
+    try {
+        let query, params;
+
+        query = 'UPDATE fornecedor SET fornecedorNome = ?, fornecedorEstado = ?, fornecedorTelefone = ?, fornecedorEmail = ?, idCategoria = ? WHERE fornecedorID = ?';
+        params = [nome, estado, telefone, email, categoriaSelecionada, fornecedorID];
+
+        const [result] = await connection.execute(query, params);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Fornecedor atualizado com sucesso' });
+        } else {
+            res.status(404).json({ message: 'Fornecedor não encontrado' });
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar o fornecedor:', error);
+        res.status(500).json({ message: 'Erro no servidor ao atualizar o fornecedor' });
     } finally {
         if (connection) connection.release();
     }
@@ -94,4 +119,4 @@ async function getCategorias(req, res) {
     }
 };
 
-module.exports = { registerSupplier, getSuppliers, deleteSupplier, getFornecedores, getCategorias };
+module.exports = { registerSupplier, getSuppliers, deleteSupplier, updateSuppliers, getFornecedores, getCategorias };

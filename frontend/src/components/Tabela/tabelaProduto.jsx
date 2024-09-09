@@ -33,8 +33,8 @@ function TabelaProdutos() {
         }
     };
 
-    const editarProduto = (produtoID, produtoNome, produtoQuantidade, produtoPreco, fornecedorNome, fornecedorID) => {
-        navigate('/alterarProduto', { state: { produtoID, produtoNome, produtoQuantidade, produtoPreco, fornecedorNome, fornecedorID } });
+    const editarProduto = (produto) => {
+        navigate('/alterarProduto', { state: { produto } });
     }
 
     return (
@@ -53,8 +53,8 @@ function TabelaProdutos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {produtos.map((produto, index) => (
-                        <tr key={index}>
+                    {produtos.map((produto) => (
+                        <tr key={produto.produtoID}>
                             <td>{produto.produtoID}</td>
                             <td>{produto.produtoNome}</td>
                             <td>{produto.produtoQuantidade}</td>
@@ -71,7 +71,7 @@ function TabelaProdutos() {
                                 <button onClick={() => deletarProduto(produto.produtoID)}>
                                     Excluir
                                 </button>
-                                <button onClick={() => editarProduto(produto.produtoID, produto.produtoNome, produto.produtoQuantidade, produto.produtoPreco, produto.produtoImagem, produto.fornecedorNome, produto.fornecedorID,)}>
+                                <button onClick={() => editarProduto(produto)}>
                                     Editar
                                 </button>
                             </td>

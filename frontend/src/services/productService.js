@@ -13,19 +13,11 @@ export const getProducts = async () => {
     return response.json();
 };
 
-export const updateProduct = async (produtoID, nome, quantidade, preco, imagem, fornecedorSelecionado) => {
-    const body = {
-        produtoID, nome, quantidade, preco, imagem, fornecedorSelecionado
-    };
-
+export const updateProduct = async (formData) => {
     const response = await fetch(`${BASE_URL}/product/updateProduct`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+        body: formData,
     });
-
     return response.json();
 };
 

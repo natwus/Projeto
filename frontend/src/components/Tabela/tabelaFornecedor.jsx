@@ -1,3 +1,4 @@
+//tabela
 import { useEffect, useState } from "react";
 import { getAllSuppliers, delSupplier } from "../../services/supplierService";
 import { Link, useNavigate } from "react-router-dom";

@@ -3,9 +3,18 @@ const router = express.Router();
 const upload = require('../middleware/uploadMiddleware');
 const { registerProduct, deleteProduct, getProducts, updateProduct } = require('../controllers/productController');
 
-router.post('/registerProduct', upload.single('imagem'), registerProduct);
+const conditionalUpload = (req, res, next) => {
+    upload.single('imagem')(req, res, (err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erro no upload da imagem' });
+        }
+        next();
+    });
+};
+
+router.post('/registerProduct', conditionalUpload, registerProduct);
 router.get('/products', getProducts);
-router.post('/updateProduct', upload.single('imagem'),  updateProduct);
+router.post('/updateProduct', conditionalUpload, updateProduct);
 router.delete('/deleteProduct/:id', deleteProduct);
 
 module.exports = router;

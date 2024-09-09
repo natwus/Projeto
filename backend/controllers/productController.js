@@ -34,42 +34,51 @@ async function registerProduct(req, res) {
 }
 
 async function updateProduct(req, res) {
-    const { produtoID, nome, quantidade, preco, fornecedorSelecionado } =
-        req.body;
+    const { id, nome, quantidade, preco, fornecedorSelecionado } = req.body;
     const imagem = req.file ? req.file.filename : null;
     const connection = await connectToDatabase();
-    const [rows] = await connection.execute(
-        "SELECT produtoImagem FROM produto WHERE produtoID = ?",
-        [produtoID]
-    );
-    const imageName = rows[0].produtoImagem;
-    const imagePath = path.join(__dirname, "../uploads/", imageName);
+
+    console.log(req.body); 
 
     try {
         let query, params;
 
         if (imagem) {
-            fs.unlink(imagePath, (err) => {
-                if (err) {
-                    console.error("Erro ao excluir a imagem:", err);
-                    return res
-                        .status(500)
-                        .json({ success: false, message: "Erro ao excluir a imagem!" });
-                }});
-            query =
-                "UPDATE produto SET produtoNome = ?, produtoQuantidade = ?, produtoPreco = ?, produtoImagem = ?, fornecedorID = ? WHERE produtoID = ?";
+            const [rows] = await connection.execute(
+                "SELECT produtoImagem FROM produto WHERE produtoID = ?",
+                [id] 
+            );
+            
+            if (rows.length > 0) {
+                const imageName = rows[0].produtoImagem;
+                const imagePath = path.join(__dirname, "../uploads/", imageName);
+
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error("Erro ao excluir a imagem:", err);
+                        return res.status(500).json({ success: false, message: "Erro ao excluir a imagem!" });
+                    }
+                });
+            }
+
+            query = "UPDATE produto SET produtoNome = ?, produtoQuantidade = ?, produtoPreco = ?, produtoImagem = ?, fornecedorID = ? WHERE produtoID = ?";
             params = [
-                nome,
-                quantidade,
-                preco,
-                imagem,
-                fornecedorSelecionado,
-                produtoID,
+                nome || null, 
+                quantidade || null, 
+                preco || null, 
+                imagem || null, 
+                fornecedorSelecionado || null, 
+                id || null
             ];
         } else {
-            query =
-                "UPDATE produto SET produtoNome = ?, produtoQuantidade = ?, produtoPreco = ?, fornecedorID = ? WHERE produtoID = ?";
-            params = [nome, quantidade, preco, fornecedorSelecionado, produtoID];
+            query = "UPDATE produto SET produtoNome = ?, produtoQuantidade = ?, produtoPreco = ?, fornecedorID = ? WHERE produtoID = ?";
+            params = [
+                nome || null, 
+                quantidade || null, 
+                preco || null, 
+                fornecedorSelecionado || null, 
+                id || null
+            ];
         }
 
         const [result] = await connection.execute(query, params);
@@ -77,13 +86,11 @@ async function updateProduct(req, res) {
         if (result.affectedRows > 0) {
             res.status(200).json({ message: 'Produto atualizado com sucesso' });
         } else {
-            res.status(404).json({ message: "Prtoduto não encontrado" });
+            res.status(404).json({ message: "Produto não encontrado" });
         }
     } catch (error) {
         console.error("Erro ao atualizar o produto:", error);
-        res
-            .status(500)
-            .json({ message: "Erro no servidor ao atualizar o produto" });
+        res.status(500).json({ message: "Erro no servidor ao atualizar o produto" });
     } finally {
         if (connection) connection.release();
     }
@@ -141,10 +148,6 @@ async function deleteProduct(req, res) {
         if (connection) connection.release();
     }
 }
-
-//updateproducts: if (imagem) select from produto where produtoImagem = id alterado const imageName = rows[0].produtoImagem; const imagePath = path.join(__dirname, '../uploads/', imageName);
-
-// const [result] = await connection.execute('DELETE FROM produto WHERE produtoID = ?', [id]);
 
 async function getProducts(req, res) {
     const connection = await connectToDatabase();

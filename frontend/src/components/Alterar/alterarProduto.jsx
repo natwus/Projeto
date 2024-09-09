@@ -4,27 +4,18 @@ import { getFornecedores } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { updateProduct } from '../../services/productService';
 
-function EditarFornecedor() {
+function EditarProduto() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { produtoID, produtoNome, produtoQuantidade, produtoPreco, fornecedorID } = location.state || {};
-    const [nome, setNome] = useState(produtoNome || '');
-    const [quantidade, setQuantidade] = useState(produtoQuantidade || '');
-    const [preco, setPreco] = useState(produtoPreco || '');
+    const { produto } = location.state || {};
+    const [nome, setNome] = useState(produto?.produtoNome || '');
+    const [quantidade, setQuantidade] = useState(produto?.produtoQuantidade || '');
+    const [preco, setPreco] = useState(produto?.produtoPreco || '');
     const [imagem, setImagem] = useState('');
     const [fornecedores, setFornecedores] = useState([]);
-    const [fornecedorSelecionado, setFornecedorSelecionado] = useState(fornecedorID || '');
+    const [fornecedorSelecionado, setFornecedorSelecionado] = useState(produto?.fornecedorID || '');
 
     useSessionTimeout();
-
-    useEffect(() => {
-        setNome(produtoNome || '');
-        setQuantidade(produtoQuantidade || '');
-        setPreco(produtoPreco || '');
-        setImagem('');
-        setFornecedorSelecionado(fornecedorID || '');
-        console.log(nome, quantidade, preco, fornecedorSelecionado);
-    }, [produtoNome, produtoQuantidade, produtoPreco, fornecedorID]);
 
     useEffect(() => {
         const fetchFornecedores = async () => {
@@ -46,13 +37,26 @@ function EditarFornecedor() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateProduct(produtoID, nome, quantidade, preco, imagem, fornecedorSelecionado || undefined);
+            const formData = new FormData();
+            formData.append('id', produto.produtoID);
+            formData.append('nome', nome);
+            formData.append('quantidade', quantidade);
+            formData.append('preco', preco);
+            if (imagem) formData.append('imagem', imagem);
+            formData.append('fornecedorSelecionado', fornecedorSelecionado);
+    
+            await updateProduct(formData);
             alert('Produto atualizado com sucesso!');
             navigate('/produtos');
         } catch (error) {
             console.error(error);
             alert('Erro ao atualizar o produto');
         }
+    };
+    
+
+    const handleImageChange = (e) => {
+        setImagem(e.target.files[0] || null);
     };
 
     return (
@@ -68,7 +72,7 @@ function EditarFornecedor() {
                 />
                 <label>Quantidade</label>
                 <input
-                    type="text"
+                    type="number"
                     name="quantidade"
                     value={quantidade}
                     onChange={(e) => setQuantidade(e.target.value)}
@@ -84,8 +88,7 @@ function EditarFornecedor() {
                 <input
                     type="file"
                     name="imagem"
-                    value={imagem}
-                    onChange={(e) => setImagem(e.target.value)}
+                    onChange={handleImageChange}
                 />
                 <label>Fornecedor</label>
                 <select
@@ -96,7 +99,7 @@ function EditarFornecedor() {
                     <option value="">Selecione um fornecedor</option>
                     {fornecedores.map((fornecedor) => (
                         <option key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
-                            {fornecedor.fornecedorNome}- {fornecedor.nomeCategoria}
+                            {fornecedor.fornecedorNome} - {fornecedor.nomeCategoria}
                         </option>
                     ))}
                 </select>
@@ -107,4 +110,4 @@ function EditarFornecedor() {
     );
 }
 
-export default EditarFornecedor;
+export default EditarProduto;

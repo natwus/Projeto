@@ -11,10 +11,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const [isConsultaDropdownOpen, setConsultaDropdownOpen] = useState(false);
     const token = localStorage.getItem('token');
 
-    let emailUsuario = '';
+    let nomeUsuario;
     if (token) {
         const decoded = jwtDecode(token);
-        emailUsuario = decoded.id
+        nomeUsuario = decoded.nome
     }
 
     // Funções para alternar a visibilidade dos dropdowns
@@ -322,7 +322,6 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             default:
                 return (
                     <>
-                        <h3>Usuario Logado: {emailUsuario}</h3>
                         <SidebarButton as={Link} to="/inicio">Voltar</SidebarButton>
                     </>
                 );
@@ -333,6 +332,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         <>
             <Overlay isOpen={isOpen} onClick={closeSidebar} />
             <SidebarContainer isOpen={isOpen}>
+                <h3>Olá {nomeUsuario}</h3>
                 {getSidebarContent()}
             </SidebarContainer>
         </>

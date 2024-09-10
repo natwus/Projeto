@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from '../../services/userService';
+import { jwtDecode } from "jwt-decode";
 
 function Cadastro() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [nome, setNome] = useState('');
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     const handleVoltar = () => {
         navigate(-1); 
@@ -16,13 +24,13 @@ function Cadastro() {
         event.preventDefault();
 
         try {
-            const data = await registerUser(nome, email, senha);
+            const data = await registerUser(nome, email, senha, emailLogado);
 
-            if (data.sucess) {
-                alert('Cadastro realizado!');
-                navigate('/');
+            if (data.success) {
+                alert('Cadastro realizado!')
+                navigate('/')
             } else {
-                alert('Erro: ' + data.message);
+                alert(data.message)
             }
         } catch (error) {
             console.error('Erro ao enviar os dados:', error);
@@ -31,7 +39,7 @@ function Cadastro() {
 
     return (
         <div>
-            <h1>Cadastro Usuario</h1>
+            <h1>Cadastro Usuário</h1>
             <form onSubmit={enviarDados}>
                 <label>Nome</label>
                 <input

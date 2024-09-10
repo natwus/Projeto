@@ -12,11 +12,13 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const token = localStorage.getItem('token');
 
     let nomeUsuario;
+    let message;
     if (token) {
         const decoded = jwtDecode(token);
-        nomeUsuario = decoded.nome
+        nomeUsuario = decoded.nome;
+        message = `Olá, ${nomeUsuario} `;
     }
-
+    
     // Funções para alternar a visibilidade dos dropdowns
     const toggleCadastroDropdown = () => {
         setCadastroDropdownOpen(!isCadastroDropdownOpen);
@@ -32,6 +34,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
     const handleLogoff = () => {
         localStorage.removeItem('token');
+        closeSidebar();
         navigate('/');
     };
 
@@ -332,7 +335,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         <>
             <Overlay isOpen={isOpen} onClick={closeSidebar} />
             <SidebarContainer isOpen={isOpen}>
-                <h3>Olá {nomeUsuario}</h3>
+                <h3>{message}</h3>
                 {getSidebarContent()}
             </SidebarContainer>
         </>

@@ -4,10 +4,17 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET;
 
 async function registerUser(req, res) {
-    const { nome, email, senha } = req.body;
+    const { nome, email, senha, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+        }
+
         const [rows] = await connection.execute('SELECT usuarioUsuario FROM usuario WHERE usuarioUsuario = ?', [email]);
 
         if (rows.length > 0) {
@@ -98,10 +105,17 @@ async function getUserName(req, res) {
 };
 
 async function updateUser(req, res) {
-    const { usuarioID, nome, email, senha } = req.body;
+    const { usuarioID, nome, email, senha, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+        }
+
         let query, params;
 
         if (senha) {
@@ -130,9 +144,19 @@ async function updateUser(req, res) {
 
 async function deleteUser(req, res) {
     const { id } = req.params;
+    const { emailLogado } = req.body;
     const connection = await connectToDatabase();
 
+    console.log(emailLogado);
+
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+        }
+
         const [result] = await connection.execute('DELETE FROM usuario WHERE usuarioID = ?', [id]);
 
         if (result.affectedRows > 0) {

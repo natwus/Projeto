@@ -1,12 +1,12 @@
 const BASE_URL = 'http://localhost:3001/api';
 
-export const registerUser = async (nome, email, senha) => {
+export const registerUser = async (nome, email, senha, emailLogado) => {
     const response = await fetch(`${BASE_URL}/user/registerUser`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nome, email, senha }),
+        body: JSON.stringify({ nome, email, senha, emailLogado }),
     });
     return response.json();
 };
@@ -50,12 +50,13 @@ export const getUsers = async () => {
     return response.json();
 };
 
-export const updateUser = async (usuarioID, nome, email, senha) => {
+export const updateUser = async (usuarioID, nome, email, senha, emailLogado) => {
     const body = {
         usuarioID,
         nome,
         email,
-        ...(senha && { senha })
+        ...(senha && { senha }),
+        emailLogado
     };
 
     const response = await fetch(`${BASE_URL}/user/updateUser`, {
@@ -65,15 +66,17 @@ export const updateUser = async (usuarioID, nome, email, senha) => {
         },
         body: JSON.stringify(body),
     });
-
     return response.json();
 };
 
-export const delUser = async (userID) => {
+export const delUser = async (userID, emailLogado) => {
     const response = await fetch(`${BASE_URL}/user/deleteUser/${userID}`, {
         method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ emailLogado }) // Passando como objeto
     });
-    if (!response.ok) {
-        throw new Error('Erro ao excluir usuário');
-    }
+
+    return response.json();
 };

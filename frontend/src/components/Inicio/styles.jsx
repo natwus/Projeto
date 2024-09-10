@@ -51,17 +51,6 @@ export const Title = styled.h1`
   margin: 0;
 `;
 
-//Estilo Botao menu (Sidebar)
-export const MenuButton = styled.button`
-  position: absolute;
-  left: 20px;
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 24px;
-  cursor: pointer;
-`;
-
 // Estilos Sidebar
 export const SidebarContainer = styled.div`
    width: 250px;
@@ -121,7 +110,7 @@ export const DropdownButton = styled.button`
 
 // Estilos Overlay (Diminuir a visibilidade do conteúdo enquanto a sidebar está aberto)
 export const Overlay = styled.div`
-   position: fixed;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -132,6 +121,48 @@ export const Overlay = styled.div`
   transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 1;
 `;
+
+// Estilos para o MenuButton 
+export const MenuButton = styled.button`
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 30px; /* Ajuste o tamanho conforme necessário */
+  height: 25px; /* Ajuste o tamanho conforme necessário */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+  transform: ${({isOpen}) => (isOpen ? 'rotate(9deg)' : '')};
+
+  &:focus {
+    outline: none;
+  }
+
+  /* Linhas do menu */
+  span {
+    display: block;
+    width: 30px; /* Ajuste o tamanho conforme necessário */
+    height: 3px; /* Espessura das linhas */
+    background: #fff; /* Cor das linhas */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Aplica a transformação quando o estado isOpen é true */
+  span:nth-child(1) {
+    transform: ${({isOpen}) => (isOpen ? 'rotate(35deg) translateY(18px)' : '')};
+  }
+  span:nth-child(2) {
+    opacity: ${({isOpen}) => (isOpen ? '0' : '1')};
+  }
+  span:nth-child(3) {
+    transform: ${({isOpen}) => (isOpen ? 'rotate(-55deg) translateY(-12px)' : '')};
+  }
+`;
+
+
 
 // Estilos fundo do Formulario
 export const FormContainer = styled.div`

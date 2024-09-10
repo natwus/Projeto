@@ -29,7 +29,7 @@ function App() {
     return (
         <BrowserRouter>
             <>
-                <Header toggleSidebar={toggleSidebar} />
+                <Header toggleSidebar={toggleSidebar} isOpen={isSidebarOpen} />
                 <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
                 <center>
                     <Routes>

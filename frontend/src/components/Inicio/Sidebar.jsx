@@ -41,7 +41,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/inicio">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -51,9 +51,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
                             </>
                         )}
 
@@ -65,9 +65,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 
@@ -76,7 +76,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/cadastroUsuario":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/inicio">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -86,8 +86,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
                             </>
                         )}
 
@@ -99,9 +99,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 
@@ -121,8 +121,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
                             </>
                         )}
 
@@ -134,9 +134,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 
@@ -156,8 +156,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
                             </>
                         )}
 
@@ -169,9 +169,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 
@@ -191,9 +191,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
                             </>
                         )}
 
@@ -205,8 +205,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 
@@ -226,9 +226,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
                             </>
                         )}
 
@@ -240,8 +240,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
                             </>
                         )}
 
@@ -261,9 +261,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
                             </>
                         )}
 
@@ -275,8 +275,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 
@@ -286,7 +286,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/inicio":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/">Login</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Login</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -296,9 +296,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Cadastro */}
                         {isCadastroDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
-                                <DropdownButton as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroUsuario">Cadastro Usuário</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroProduto">Cadastro Produto</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/cadastroFornecedor">Cadastro Fornecedor</DropdownButton>
                             </>
                         )}
 
@@ -310,9 +310,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         {/* Conteúdo do Dropdown de Consulta */}
                         {isConsultaDropdownOpen && (
                             <>
-                                <DropdownButton as={Link} to="/produtos">Consultar Produtos</DropdownButton>
-                                <DropdownButton as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
-                                <DropdownButton as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/produtos">Consultar Produtos</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/fornecedores">Consultar Fornecedores</DropdownButton>
+                                <DropdownButton onClick={closeSidebar} as={Link} to="/usuarios">Consultar Usuários</DropdownButton>
                             </>
                         )}
 

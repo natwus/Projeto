@@ -209,9 +209,11 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     const token = localStorage.getItem('token');
 
     let nomeUsuario;
+    let menssage;
     if (token) {
         const decoded = jwtDecode(token);
         nomeUsuario = decoded.nome;
+        menssage = `Olá, ${nomeUsuario}`
     }
 
     // Funções para alternar a visibilidade dos dropdowns

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getFornecedores } from '../../services/supplierService'
 import { registerProduct } from '../../services/productService'
 import useSessionTimeout from '../../hooks/useSessionTimeout'
+import { jwtDecode } from "jwt-decode";
 
 function CadastroProduto() {
     const [nome, setNome] = useState('');
@@ -12,6 +13,13 @@ function CadastroProduto() {
     const [fornecedor, setFornecedor] = useState([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState('');
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     useSessionTimeout();
 
@@ -37,8 +45,7 @@ function CadastroProduto() {
         formData.append('preco', preco);
         formData.append('imagem', imagem);
         formData.append('fornecedorSelecionado', fornecedorSelecionado);
-
-        console.log(nome, quantidade, preco, imagem, fornecedorSelecionado)
+        formData.append('emailLogado', emailLogado);
 
         try {
             const data = await registerProduct(formData);
@@ -47,7 +54,7 @@ function CadastroProduto() {
                 alert('Cadastro realizado!');
                 navigate('/produtos');
             } else {
-                alert('Erro: ' + data.message);
+                alert(data.message);
             }
         } catch (error) {
             console.error('Erro ao enviar os dados:', error);

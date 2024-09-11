@@ -30,9 +30,9 @@ function TabelaUsuario() {
         fetchUsuarios();
     }, []);
 
-    const deletarUsuario = async (usuarioID) => {
+    const deletarUsuario = async (usuarioID, usuarioNome, usuarioUsuario) => {
         try {
-            const data = await delUser(usuarioID, emailLogado);
+            const data = await delUser(usuarioID, emailLogado, usuarioNome, usuarioUsuario);
 
             if (data.success) {
                 alert('Usuário excluído com sucesso!');
@@ -71,7 +71,7 @@ function TabelaUsuario() {
                             <td>{usuario.usuarioUsuario}</td>
                             <td>{usuario.permissaoNome}</td>
                             <td>
-                                <button onClick={() => deletarUsuario(usuario.usuarioID)}>
+                                <button onClick={() => deletarUsuario(usuario.usuarioID, usuario.usuarioNome, usuario.usuarioUsuario)}>
                                     Excluir
                                 </button>
                                 <button onClick={() => editarUsuario(usuario.usuarioID, usuario.usuarioNome, usuario.usuarioUsuario)}>

@@ -21,11 +21,18 @@ export const updateProduct = async (formData) => {
     return response.json();
 };
 
-export const delProduct = async (produtoID) => {
+export const delProduct = async (produtoID, emailLogado) => {
     const response = await fetch(`${BASE_URL}/product/deleteProduct/${produtoID}`, {
         method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ emailLogado })
     });
-    if (!response.ok) {
-        throw new Error('Erro ao excluir produto');
-    }
+    return response.json();
+};
+
+export const getLogs = async () => {
+    const response = await fetch(`${BASE_URL}/product/logs`);
+    return response.json();
 };

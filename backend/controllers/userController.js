@@ -24,6 +24,11 @@ async function registerUser(req, res) {
         const hashedPassword = await bcrypt.hash(senha, 10);
         await connection.execute('INSERT INTO usuario (usuarioNome, usuarioUsuario, usuarioSenha, permissaoID) VALUES (?, ?, ?, ?)', [nome, email, hashedPassword, permissaoSelecionada,]);
 
+        const dataHoraCadastro = new Date().toLocaleString();
+        const historico = `Usuário '${emailLogado}' cadastrou um novo usuário '${nome}' (${email}) às ${dataHoraCadastro}`
+
+        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
+
         res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {
         console.error(error);
@@ -130,11 +135,11 @@ async function updateUser(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const [permissoes] = await connection.execute('SELECT permissaoID, usuarioUsuario FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
         if(permissao !== 3){
-            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+            return res.status(403).json({ message: 'Usuário sem permissão'});
         }
 
         let query, params;
@@ -149,6 +154,11 @@ async function updateUser(req, res) {
         }
 
         const [result] = await connection.execute(query, params);
+
+        const dataHoraCadastro = new Date().toLocaleString();
+        const historico = `Usuário '${emailLogado}' alterou o usuário '${nome}' (${email}) às ${dataHoraCadastro}`
+
+        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
             res.status(200).json({ sucess: true, message: 'Usuário atualizado com sucesso' });
@@ -165,10 +175,8 @@ async function updateUser(req, res) {
 
 async function deleteUser(req, res) {
     const { id } = req.params;
-    const { emailLogado } = req.body;
+    const { emailLogado, usuarioNome, usuarioUsuario } = req.body;
     const connection = await connectToDatabase();
-
-    console.log(emailLogado);
 
     try {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
@@ -179,6 +187,11 @@ async function deleteUser(req, res) {
         }
 
         const [result] = await connection.execute('DELETE FROM usuario WHERE usuarioID = ?', [id]);
+
+        const dataHoraCadastro = new Date().toLocaleString();
+        const historico = `Usuário '${emailLogado}' deletou o usuário '${usuarioNome}' (${usuarioUsuario}) às ${dataHoraCadastro}`
+
+        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
             res.status(200).json({ success: true, message: 'Usuário excluído com sucesso!' });

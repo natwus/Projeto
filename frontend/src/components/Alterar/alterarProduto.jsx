@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getFornecedores } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { updateProduct } from '../../services/productService';
+import { jwtDecode } from 'jwt-decode';
 
 function EditarProduto() {
     const navigate = useNavigate();
@@ -14,6 +15,13 @@ function EditarProduto() {
     const [imagem, setImagem] = useState('');
     const [fornecedores, setFornecedores] = useState([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState(produto?.fornecedorID || '');
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     useSessionTimeout();
 
@@ -31,7 +39,7 @@ function EditarProduto() {
     }, []);
 
     const handleVoltar = () => {
-        navigate(-1); 
+        navigate(-1);
     };
 
     const handleSubmit = async (e) => {
@@ -42,18 +50,24 @@ function EditarProduto() {
             formData.append('nome', nome);
             formData.append('quantidade', quantidade);
             formData.append('preco', preco);
+            formData.append('emailLogado', emailLogado);
             if (imagem) formData.append('imagem', imagem);
             formData.append('fornecedorSelecionado', fornecedorSelecionado);
-    
-            await updateProduct(formData);
-            alert('Produto atualizado com sucesso!');
-            navigate('/produtos');
+
+            const data = await updateProduct(formData);
+
+            if (data.sucess) {
+                alert('Produto atualizado com sucesso!');
+                navigate('/produtos');
+            } else {
+                alert(data.message);
+            }
         } catch (error) {
             console.error(error);
             alert('Erro ao atualizar o produto');
         }
     };
-    
+
 
     const handleImageChange = (e) => {
         setImagem(e.target.files[0] || null);

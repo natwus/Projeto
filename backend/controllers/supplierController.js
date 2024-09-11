@@ -1,10 +1,17 @@
 const { connectToDatabase } = require('../config/db');
 
 async function registerSupplier(req, res) {
-    const { nome, estadoSelecionado, telefone, email, categoriaSelecionada } = req.body;
+    const { nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
+        }
+
         const [rows] = await connection.execute('SELECT fornecedorNome FROM fornecedor WHERE fornecedorNome = ?', [nome]);
 
         if (rows.length > 0) {
@@ -69,7 +76,7 @@ async function updateSuppliers(req, res) {
         const permissao = permissoes[0].permissaoID;
 
         if(permissao !== 3){
-            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+            return res.status(403).json({ message: 'Usuário sem permissão'});
         }
 
         let query, params;
@@ -80,7 +87,7 @@ async function updateSuppliers(req, res) {
         const [result] = await connection.execute(query, params);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ message: 'Fornecedor atualizado com sucesso' });
+            res.status(200).json({ success: true, message: 'Fornecedor atualizado com sucesso' });
         } else {
             res.status(404).json({ message: 'Fornecedor não encontrado' });
         }
@@ -94,10 +101,17 @@ async function updateSuppliers(req, res) {
 
 async function deleteSupplier(req, res) {
     const { id } = req.params;
-    let connection;
+    const { emailLogado } = req.body;
+    const connection = await connectToDatabase();
 
     try {
-        connection = await connectToDatabase();
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
+        }
+
         const [result] = await connection.execute('DELETE FROM fornecedor WHERE fornecedorID = ?', [id]);
 
         if (result.affectedRows > 0) {

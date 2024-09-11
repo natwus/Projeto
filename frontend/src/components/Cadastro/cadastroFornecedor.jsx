@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCategorias, getEstados, registerSupplier } from '../../services/supplierService';
 import useSessionTimeout from "../../hooks/useSessionTimeout";
+import { jwtDecode } from "jwt-decode";
 
 function CadastroFornecedor() {
     const [nome, setNome] = useState('');
@@ -12,6 +13,13 @@ function CadastroFornecedor() {
     const [categorias, setCategorias] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     useSessionTimeout();
 
@@ -45,7 +53,7 @@ function CadastroFornecedor() {
         event.preventDefault();
 
         try {
-            const data = await registerSupplier(nome, estadoSelecionado, telefone, email, categoriaSelecionada);
+            const data = await registerSupplier(nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado);
 
             if (data.sucess) {
                 alert('Cadastro realizado!');

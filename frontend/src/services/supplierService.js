@@ -1,12 +1,12 @@
 const BASE_URL = 'http://localhost:3001/api';
 
-export const registerSupplier = async (nome, estadoSelecionado, telefone, email, categoriaSelecionada) => {
+export const registerSupplier = async (nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado) => {
     const response = await fetch(`${BASE_URL}/supplier/registerSupplier`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nome, estadoSelecionado, telefone, email, categoriaSelecionada }),
+        body: JSON.stringify({ nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado }),
     });
     return response.json();
 };
@@ -52,15 +52,13 @@ export const updateSupplier = async (fornecedorID, nome, estado, telefone, email
     return response.json();
 };
 
-export const delSupplier = async (fornecedorID) => {
+export const delSupplier = async (fornecedorID, emailLogado) => {
     const response = await fetch(`${BASE_URL}/supplier/deleteSupplier/${fornecedorID}`, {
         method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ emailLogado })
     });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.message || 'Erro ao excluir fornecedor');
-    }
-
-    return data;
+    return response.json();
 };

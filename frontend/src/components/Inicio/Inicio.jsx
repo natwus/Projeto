@@ -1,25 +1,25 @@
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
-import { jwtDecode } from "jwt-decode";
+import { getLogs } from "../../services/productService";
+import { useEffect, useState } from "react";
 
 function Inicio() {
-    const navigate = useNavigate();
+    const [logs, setLogs] = useState([]);
     
     useSessionTimeout();
 
-    const token = localStorage.getItem('token');
+    useEffect(() => {
+        async function fetchLogs() {
+            try {
+                const data = await getLogs();
+                setLogs(data);
+            } catch (error) {
+                console.error('Erro ao buscar os usuários:', error);
+            }
+        };
 
-    let emailUsuario = '';
-    if (token) {
-        const decoded = jwtDecode(token);
-        emailUsuario = decoded.id 
-    }
-
-    const handleLogoff = () => {
-        localStorage.removeItem('token');
-        navigate('/');
-    };
+        fetchLogs();
+    }, []);
 
     return (
         <>
@@ -34,8 +34,20 @@ function Inicio() {
             <Link to={"/produtos"}>Produtos / </Link>
             <br />
             <br />
-            <h3>Usuario Logado: {emailUsuario}</h3>
-            <button onClick={handleLogoff}>LogOut</button>
+            <table border={1}>
+                <thead>
+                    <tr>
+                        <th>Histórico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {logs.map((log) => (
+                        <tr key={log.historicoID}>
+                            <td>{log.historicoDescricao}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </>
     )
 }

@@ -2,10 +2,18 @@ import { useEffect, useState } from "react";
 import { getProducts, delProduct } from "../../services/productService";
 import { Link, useNavigate } from "react-router-dom";
 import useSessionTimeout from "../../hooks/useSessionTimeout";
+import { jwtDecode } from "jwt-decode";
 
 function TabelaProdutos() {
     const [produtos, setProdutos] = useState([]);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     useSessionTimeout();
 
@@ -24,9 +32,14 @@ function TabelaProdutos() {
 
     const deletarProduto = async (produtoID) => {
         try {
-            await delProduct(produtoID);
-            alert('Produto excluído com sucesso!');
-            setProdutos(produtos.filter(produto => produto.produtoID !== produtoID));
+            const data = await delProduct(produtoID, emailLogado);
+
+            if (data.sucess) {
+                alert('Produto excluído com sucesso!');
+                setProdutos(produtos.filter(produto => produto.produtoID !== produtoID));
+            } else {
+                alert(data.message);
+            }
         } catch (error) {
             console.error('Erro ao excluir produto:', error);
             alert('Erro ao excluir produto');

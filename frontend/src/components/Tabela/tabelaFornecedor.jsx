@@ -3,10 +3,18 @@ import { useEffect, useState } from "react";
 import { getAllSuppliers, delSupplier } from "../../services/supplierService";
 import { Link, useNavigate } from "react-router-dom";
 import useSessionTimeout from "../../hooks/useSessionTimeout";
+import { jwtDecode } from "jwt-decode";
 
 function TabelaFornecedor() {
     const [fornecedores, setFornecedores] = useState([]);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     useSessionTimeout();
 
@@ -25,9 +33,14 @@ function TabelaFornecedor() {
 
     const deletarFornecedor = async (fornecedorID) => {
         try {
-            await delSupplier(fornecedorID);
-            alert('Fornecedor excluído com sucesso!');
+            const data = await delSupplier(fornecedorID, emailLogado);
+
+            if (data.success){
+                alert('Fornecedor excluído com sucesso!');
             setFornecedores(fornecedores.filter(fornecedor => fornecedor.fornecedorID !== fornecedorID));
+            } else {
+                alert(data.message);
+            }
         } catch (error) {
             const errorMessage = error.message;
     

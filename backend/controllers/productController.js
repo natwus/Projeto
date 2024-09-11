@@ -4,10 +4,17 @@ const path = require("path");
 
 async function registerProduct(req, res) {
     const connection = await connectToDatabase();
-    const { nome, quantidade, preco, fornecedorSelecionado } = req.body;
+    const { nome, quantidade, preco, fornecedorSelecionado, emailLogado } = req.body;
     const imagem = req.file ? req.file.filename : null;
 
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao === 1){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
+        }
+
         const [rows] = await connection.execute(
             "SELECT produtoNome FROM produto WHERE produtoNome = ?",
             [nome]
@@ -34,13 +41,18 @@ async function registerProduct(req, res) {
 }
 
 async function updateProduct(req, res) {
-    const { id, nome, quantidade, preco, fornecedorSelecionado } = req.body;
+    const { id, nome, quantidade, preco, fornecedorSelecionado, emailLogado } = req.body;
     const imagem = req.file ? req.file.filename : null;
     const connection = await connectToDatabase();
 
-    console.log(req.body); 
-
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao === 1){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
+        }
+
         let query, params;
 
         if (imagem) {
@@ -98,9 +110,17 @@ async function updateProduct(req, res) {
 
 async function deleteProduct(req, res) {
     const { id } = req.params;
+    const { emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
+        }
+
         const [rows] = await connection.execute(
             "SELECT produtoImagem FROM produto WHERE produtoID = ?",
             [id]
@@ -166,6 +186,20 @@ async function getProducts(req, res) {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
-module.exports = { registerProduct, getProducts, updateProduct, deleteProduct };
+async function getLogs(req, res) {
+    const connection = await connectToDatabase();
+
+    try {
+        const [rows] = await connection.execute('SELECT historicoID, historicoDescricao FROM historico');
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao buscar produtos." });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+module.exports = { registerProduct, getProducts, updateProduct, getLogs, deleteProduct };

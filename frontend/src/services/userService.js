@@ -79,13 +79,13 @@ export const updateUser = async (usuarioID, nome, email, senha, emailLogado) => 
     return response.json();
 };
 
-export const delUser = async (userID, emailLogado) => {
+export const delUser = async (userID, emailLogado, usuarioNome, usuarioUsuario) => {
     const response = await fetch(`${BASE_URL}/user/deleteUser/${userID}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ emailLogado }) // Passando como objeto
+        body: JSON.stringify({ emailLogado, usuarioNome, usuarioUsuario }) // Passando como objeto
     });
 
     return response.json();

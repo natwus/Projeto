@@ -47,15 +47,20 @@ function EditarFornecedor() {
     }, []);
 
     const handleVoltar = () => {
-        navigate(-1); 
+        navigate(-1);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateSupplier(fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado);
-            alert('Fornecedor atualizado com sucesso!');
-            navigate('/fornecedores');
+            const data = await updateSupplier(fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado);
+
+            if (data.success) {
+                alert('Fornecedor atualizado com sucesso!');
+                navigate('/fornecedores');
+            } else {
+                alert(data.message);
+            }
         } catch (error) {
             console.error(error);
             alert('Erro ao atualizar o fornecedor');

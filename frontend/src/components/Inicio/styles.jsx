@@ -53,73 +53,65 @@ export const Title = styled.h1`
 
 // Estilos Sidebar
 export const SidebarContainer = styled.div`
-   width: 250px;
-  background-color: #363636;
-  color: white;
-  height: 100vh; /* Ajusta a altura para não sobrepor o header */
   position: fixed;
-  align-items: center;
-  top: 40px; /* Posição a partir da parte inferior do header */
-  left: ${({ isOpen }) => (isOpen ? '0' : '-250px')};
-  transition: left 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
+  top: 0;
+  right: ${props => (props.isOpen ? '85%' : '100%')};
+  width: 250px;
+  height: 100vh;
+  background-color: #363636;
+  box-shadow: -3px 0px 15px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  transition: right 0.3s ease-in-out;
   z-index: 2;
-  padding-top: 20px; /* Espaço interno para os itens da sidebar */
+  margin-top: 20px;
+
+  h3 {
+    color: #fff;
+  }
 `;
 
-//Estilos Botoes dentro da sidebar
 export const SidebarButton = styled.button`
- background-color: #ff0000;
-  color: white;
-  border: none; /* Remove a borda */
-  border-radius: 10px;
-  padding: 10px;
+  display: block;
+  width: 92%;
+  padding: 10px 20px;
   margin: 10px 0;
+  text-align: left;
+  background-color: transparent;
+  color: #fff;
+  font-size: 16px;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 200px;
-  text-align: center; /* Centraliza o texto */
-  font-size: 16px;
-  text-decoration: none;
 
   &:hover {
-    background-color: #ff6347;
+    background-color: #FF6347;
+  }
+
+  a{
+    text-decoration:none;
   }
 `;
 
-//Estilos Botoes Dropdown
-export const DropdownButton = styled.button`
- background-color: #000;
-  color: white;
-  border: none; /* Remove a borda */
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px 0;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 200px;
-  text-align: center; /* Centraliza o texto */
-  font-size: 16px;
-  text-decoration: none;
+export const DropdownButton = styled(SidebarButton)`
+  padding-left: 30px;
+  border-bottom: none;
 
   &:hover {
-    background-color: #1c1c1c;
+    background-color: #FF6347;
   }
 `;
 
-// Estilos Overlay (Diminuir a visibilidade do conteúdo enquanto a sidebar está aberto)
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  pointer-events: ${props => (props.isOpen ? 'auto' : 'none')};
+  transition: opacity 0.3s ease-in-out;
 `;
 
 // Estilos para o MenuButton 

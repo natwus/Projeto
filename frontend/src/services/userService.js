@@ -1,12 +1,12 @@
 const BASE_URL = 'http://localhost:3001/api';
 
-export const registerUser = async (nome, email, senha, emailLogado) => {
+export const registerUser = async (nome, email, senha, permissaoSelecionada, emailLogado) => {
     const response = await fetch(`${BASE_URL}/user/registerUser`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nome, email, senha, emailLogado }),
+        body: JSON.stringify({ nome, email, senha, permissaoSelecionada, emailLogado }),
     });
     return response.json();
 };
@@ -39,6 +39,16 @@ export const fetchUserName = async (email) => {
         throw new Error(errorResponse.message || 'Erro ao buscar o nome do usuário');
     }
 };
+
+export const getPermissoes = async () => {
+    const response = await fetch(`${BASE_URL}/user/permitions`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.json()
+}
 
 export const getUsers = async () => {
     const response = await fetch(`${BASE_URL}/user/users`, {

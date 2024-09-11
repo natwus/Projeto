@@ -1,7 +1,7 @@
 const { connectToDatabase } = require('../config/db');
 
 async function registerSupplier(req, res) {
-    const { nome, estado, telefone, email, categoriaSelecionada } = req.body;
+    const { nome, estadoSelecionado, telefone, email, categoriaSelecionada } = req.body;
     const connection = await connectToDatabase();
 
     try {
@@ -11,7 +11,7 @@ async function registerSupplier(req, res) {
             return res.status(400).json({ message: 'Erro: Fornecedor já cadastrado!' });
         }
 
-        await connection.execute('INSERT INTO fornecedor (fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria) VALUES (?, ?, ?, ?, ?)', [nome, estado, telefone, email, categoriaSelecionada]);
+        await connection.execute('INSERT INTO fornecedor (fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria) VALUES (?, ?, ?, ?, ?)', [nome, estadoSelecionado, telefone, email, categoriaSelecionada]);
 
         res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {
@@ -27,9 +27,29 @@ async function getSuppliers(req, res) {
 
     try {
         const [rows] = await connection.execute(
-            `SELECT fornecedor.*, categoria.idCategoria, categoria.nomeCategoria 
-             FROM fornecedor 
-             JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria`
+            `SELECT fornecedor.*, 
+                    categoria.idCategoria, 
+                    categoria.nomeCategoria, 
+                    estado.estadoNome
+             FROM fornecedor
+             JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria
+             JOIN estado ON fornecedor.fornecedorEstado = estado.estadoID;`
+        );
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao buscar fornecedores." });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+async function getEstados(req, res) {
+    const connection = await connectToDatabase();
+
+    try {
+        const [rows] = await connection.execute(
+            `SELECT estadoID, estadoNome FROM estado`
         );
         res.status(200).json(rows);
     } catch (error) {
@@ -119,4 +139,4 @@ async function getCategorias(req, res) {
     }
 };
 
-module.exports = { registerSupplier, getSuppliers, deleteSupplier, updateSuppliers, getFornecedores, getCategorias };
+module.exports = { registerSupplier, getSuppliers, deleteSupplier, updateSuppliers, getEstados, getFornecedores, getCategorias };

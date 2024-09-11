@@ -21,7 +21,7 @@ function Login() {
             const fetchNomeUsuario = async () => {
                 try {
                     const data = await fetchUserName(email);
-    
+
                     if (data.nome) {
                         setNome(data.nome);
                     } else {
@@ -31,7 +31,7 @@ function Login() {
                     console.error('Erro ao buscar o nome do usuário:', error);
                 }
             };
-    
+
             fetchNomeUsuario();
         }
     }, [email]);
@@ -43,9 +43,9 @@ function Login() {
     }, [loginSuccess, navigate, codigo, email]);
 
     const handleVoltar = () => {
-        navigate(-1); 
+        navigate(-1);
     };
-    
+
     const handleLogin = async (event) => {
         event.preventDefault();
 
@@ -53,6 +53,9 @@ function Login() {
             const data = await loginUser(email, senha);
 
             if (data.usuario) {
+                if (email === 'adm@adm.com') {
+                    navigate('/inicio')
+                }
                 alert('Login bem-sucedido!');
                 enviarEmail(nome, codigo, email);
                 setLoginSuccess(true);

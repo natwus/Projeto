@@ -59,6 +59,7 @@ function TabelaUsuario() {
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Email</th>
+                        <th>Permissão</th>
                         <th>Ação</th>
                     </tr>
                 </thead>
@@ -68,6 +69,7 @@ function TabelaUsuario() {
                             <td>{usuario.usuarioID}</td>
                             <td>{usuario.usuarioNome}</td>
                             <td>{usuario.usuarioUsuario}</td>
+                            <td>{usuario.permissaoNome}</td>
                             <td>
                                 <button onClick={() => deletarUsuario(usuario.usuarioID)}>
                                     Excluir

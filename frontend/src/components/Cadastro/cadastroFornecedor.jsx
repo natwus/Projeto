@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getCategorias, registerSupplier } from '../../services/supplierService';
+import { getCategorias, getEstados, registerSupplier } from '../../services/supplierService';
 import useSessionTimeout from "../../hooks/useSessionTimeout";
 
 function CadastroFornecedor() {
     const [nome, setNome] = useState('');
-    const [estado, setEstado] = useState('');
+    const [estados, setEstados] = useState([]);
+    const [estadoSelecionado, setEstadoSelecionado] = useState('');
     const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
     const [categorias, setCategorias] = useState([]);
@@ -13,6 +14,19 @@ function CadastroFornecedor() {
     const navigate = useNavigate();
 
     useSessionTimeout();
+
+    useEffect(() => {
+        const fetchEstados = async () => {
+            try {
+                const estado = await getEstados();
+                setEstados(estado);
+            } catch (error) {
+                console.error('Erro ao buscar estados:', error);
+            }
+        };
+
+        fetchEstados();
+    }, []);
 
     useEffect(() => {
         const fetchCategorias = async () => {
@@ -31,7 +45,7 @@ function CadastroFornecedor() {
         event.preventDefault();
 
         try {
-            const data = await registerSupplier(nome, estado, telefone, email, categoriaSelecionada);
+            const data = await registerSupplier(nome, estadoSelecionado, telefone, email, categoriaSelecionada);
 
             if (data.sucess) {
                 alert('Cadastro realizado!');
@@ -56,12 +70,18 @@ function CadastroFornecedor() {
                     onChange={(e) => setNome(e.target.value)}
                 />
                 <label>Estado</label>
-                <input
-                    type="text"
+                <select
                     name="estado"
-                    value={estado}
-                    onChange={(e) => setEstado(e.target.value)}
-                />
+                    value={estadoSelecionado}
+                    onChange={(e) => setEstadoSelecionado(e.target.value)}
+                >
+                    <option value="">Selecione o Estado</option>
+                    {estados.map((estado) => (
+                        <option key={estado.estadoID} value={estado.estadoID}>
+                            {estado.estadoNome}
+                        </option>
+                    ))}
+                </select>
                 <label>Telefone</label>
                 <input
                     type="text"

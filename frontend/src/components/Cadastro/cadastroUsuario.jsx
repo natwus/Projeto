@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from '../../services/userService';
+import { getPermissoes, registerUser } from '../../services/userService';
 import { jwtDecode } from "jwt-decode";
 
 function Cadastro() {
@@ -9,6 +9,21 @@ function Cadastro() {
     const [nome, setNome] = useState('');
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [permissoes, setPermissoes] = useState([]);
+    const [permissaoSelecionada, setPermissaoSelecionada] = useState('')
+
+    useEffect(() => {
+        const fetchPermissoes = async () => {
+            try {
+                const permissao = await getPermissoes();
+                setPermissoes(permissao);
+            } catch (error){
+                console.error('Erro ao buscar permissoes:', error);
+            }
+        };
+
+        fetchPermissoes();
+    }, [])
 
     let emailLogado;
     if (token) {
@@ -24,7 +39,7 @@ function Cadastro() {
         event.preventDefault();
 
         try {
-            const data = await registerUser(nome, email, senha, emailLogado);
+            const data = await registerUser(nome, email, senha, permissaoSelecionada, emailLogado);
 
             if (data.success) {
                 alert('Cadastro realizado!')
@@ -62,6 +77,19 @@ function Cadastro() {
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                 />
+                <label>Permissão</label>
+                <select
+                    name="permissao"
+                    value={permissaoSelecionada}
+                    onChange={(e) => setPermissaoSelecionada(e.target.value)}
+                >
+                    <option value="">Selecione a permissão</option>
+                    {permissoes.map((permissao) => (
+                        <option key={permissao.permissaoID} value={permissao.permissaoID}>
+                            {permissao.permissaoNome}
+                        </option>
+                    ))}
+                </select>
                 <button type="submit">Cadastrar</button>
             </form>
             <Link to={"/"}>Já tem cadastro? </Link>

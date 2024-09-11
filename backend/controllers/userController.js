@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET;
 
 async function registerUser(req, res) {
-    const { nome, email, senha, emailLogado } = req.body;
+    const { nome, email, senha, permissaoSelecionada, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
@@ -22,7 +22,7 @@ async function registerUser(req, res) {
         }
 
         const hashedPassword = await bcrypt.hash(senha, 10);
-        await connection.execute('INSERT INTO usuario (usuarioNome, usuarioUsuario, usuarioSenha) VALUES (?, ?, ?)', [nome, email, hashedPassword]);
+        await connection.execute('INSERT INTO usuario (usuarioNome, usuarioUsuario, usuarioSenha, permissaoID) VALUES (?, ?, ?, ?)', [nome, email, hashedPassword, permissaoSelecionada,]);
 
         res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {
@@ -74,10 +74,31 @@ async function getUsers(req, res) {
     const connection = await connectToDatabase();
 
     try {
-        const [rows] = await connection.execute('SELECT usuarioID, usuarioNome, usuarioUsuario, usuarioSenha FROM usuario');
+        const [rows] = await connection.execute(`
+            SELECT usuario.usuarioID, 
+                    usuario.usuarioNome, 
+                    usuario.usuarioUsuario, 
+                    usuario.usuarioSenha,
+                    permissao.permissaoNome
+            FROM usuario
+            JOIN permissao ON permissao.permissaoID = usuario.permissaoID;`);
         res.status(200).json(rows);
     } catch (error) {
         console.error('Erro ao buscar os usuários:', error);
+        res.status(500).json({ message: 'Erro ao buscar os dados.' });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+async function getPermitions(req, res) {
+    const connection = await connectToDatabase();
+
+    try {
+        const [rows] = await connection.execute('SELECT permissaoID, permissaoNome FROM permissao');
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar os permissoes:', error);
         res.status(500).json({ message: 'Erro ao buscar os dados.' });
     } finally {
         if (connection) connection.release();
@@ -172,4 +193,4 @@ async function deleteUser(req, res) {
     }
 };
 
-module.exports = { registerUser, loginUser, getUsers, getUserName, updateUser, deleteUser };
+module.exports = { registerUser, loginUser, getUsers, getUserName, getPermitions, updateUser, deleteUser };

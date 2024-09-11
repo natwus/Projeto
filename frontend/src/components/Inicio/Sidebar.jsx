@@ -108,7 +108,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             case "/cadastroProduto":
@@ -143,7 +143,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             case "/cadastroFornecedor":
@@ -178,7 +178,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             case "/produtos":
@@ -213,7 +213,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             case "/usuarios":
@@ -248,7 +248,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             case "/fornecedores":
@@ -283,7 +283,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             case "/inicio":
@@ -319,7 +319,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff}>Sair</SidebarButton>
+                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
                     </>
                 );
             default:

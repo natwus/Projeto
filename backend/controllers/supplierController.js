@@ -61,10 +61,17 @@ async function getEstados(req, res) {
 };
 
 async function updateSuppliers(req, res) {
-    const { fornecedorID, nome, estado, telefone, email, categoriaSelecionada } = req.body;
+    const { fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
+        const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
+        const permissao = permissoes[0].permissaoID;
+
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+        }
+
         let query, params;
 
         query = 'UPDATE fornecedor SET fornecedorNome = ?, fornecedorEstado = ?, fornecedorTelefone = ?, fornecedorEmail = ?, idCategoria = ? WHERE fornecedorID = ?';

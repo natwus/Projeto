@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getCategorias, updateSupplier } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
+import { jwtDecode } from 'jwt-decode';
 
 function EditarFornecedor() {
     const navigate = useNavigate();
@@ -14,6 +15,13 @@ function EditarFornecedor() {
     const [email, setEmail] = useState(fornecedorEmail || '');
     const [categorias, setCategorias] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(idCategoria || '');
+    const token = localStorage.getItem('token');
+
+    let emailLogado;
+    if (token) {
+        const decoded = jwtDecode(token);
+        emailLogado = decoded.id
+    }
 
     useSessionTimeout();
 
@@ -45,7 +53,7 @@ function EditarFornecedor() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateSupplier(fornecedorID, nome, estado, telefone, email, categoriaSelecionada);
+            await updateSupplier(fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado);
             alert('Fornecedor atualizado com sucesso!');
             navigate('/fornecedores');
         } catch (error) {

@@ -36,9 +36,9 @@ export const getEstados = async () => {
     return response.json();
 };
 
-export const updateSupplier = async (fornecedorID, nome, estado, telefone, email, categoriaSelecionada) => {
+export const updateSupplier = async (fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado) => {
     const body = {
-        fornecedorID, nome, estado, telefone, email, categoriaSelecionada
+        fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado
     };
 
     const response = await fetch(`${BASE_URL}/supplier/updateSupplier`, {

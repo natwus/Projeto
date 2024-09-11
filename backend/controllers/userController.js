@@ -151,7 +151,7 @@ async function updateUser(req, res) {
         const [result] = await connection.execute(query, params);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ message: 'Usuário atualizado com sucesso' });
+            res.status(200).json({ sucess: true, message: 'Usuário atualizado com sucesso' });
         } else {
             res.status(404).json({ message: 'Usuário não encontrado' });
         }

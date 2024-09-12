@@ -21,13 +21,13 @@ export const updateProduct = async (formData) => {
     return response.json();
 };
 
-export const delProduct = async (produtoID, emailLogado, produtoNome) => {
+export const delProduct = async (produtoID, emailLogado) => {
     const response = await fetch(`${BASE_URL}/product/deleteProduct/${produtoID}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ emailLogado, produtoNome })
+        body: JSON.stringify({ emailLogado })
     });
     return response.json();
 };

@@ -20,11 +20,6 @@ async function registerSupplier(req, res) {
 
         await connection.execute('INSERT INTO fornecedor (fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria) VALUES (?, ?, ?, ?, ?)', [nome, estadoSelecionado, telefone, email, categoriaSelecionada]);
 
-        const dataHoraCadastro = new Date().toLocaleString();
-        const historico = `Usuário '${emailLogado}' cadastrou um novo fornecedor (${nome}) às ${dataHoraCadastro}`
-
-        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
-
         res.status(200).json({ sucess: true, message: 'Cadastro realizado com sucesso!' });
     } catch (error) {
         console.error(error);
@@ -91,11 +86,6 @@ async function updateSuppliers(req, res) {
 
         const [result] = await connection.execute(query, params);
 
-        const dataHoraCadastro = new Date().toLocaleString();
-        const historico = `Usuário '${emailLogado}' atualizou o fornecedor (${nome}) às ${dataHoraCadastro}`
-
-        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
-
         if (result.affectedRows > 0) {
             res.status(200).json({ success: true, message: 'Fornecedor atualizado com sucesso' });
         } else {
@@ -111,7 +101,7 @@ async function updateSuppliers(req, res) {
 
 async function deleteSupplier(req, res) {
     const { id } = req.params;
-    const { emailLogado, fornecedorNome } = req.body;
+    const { emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
@@ -123,11 +113,6 @@ async function deleteSupplier(req, res) {
         }
 
         const [result] = await connection.execute('DELETE FROM fornecedor WHERE fornecedorID = ?', [id]);
-
-        const dataHoraCadastro = new Date().toLocaleString();
-        const historico = `Usuário '${emailLogado}' excluiu o fornecedor (${fornecedorNome}) às ${dataHoraCadastro}`
-
-        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
             res.status(200).json({ success: true, message: 'Fornecedor excluído com sucesso!' });

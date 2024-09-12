@@ -11,8 +11,8 @@ async function registerProduct(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if (permissao === 1) {
-            return res.status(403).json({ message: 'Usuário sem permissão' });
+        if(permissao === 1){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
         }
 
         const [rows] = await connection.execute(
@@ -29,12 +29,9 @@ async function registerProduct(req, res) {
             [nome, quantidade, preco, imagem, fornecedorSelecionado]
         );
 
-        const dataHoraCadastro = new Date().toLocaleString();
-        const historico = `Usuário '${emailLogado}' cadastrou um novo produto (${nome}) às ${dataHoraCadastro}`
-
-        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
-
-        res.status(200).json({ sucess: true, message: "Cadastro realizado com sucesso!" });
+        res
+            .status(200)
+            .json({ sucess: true, message: "Cadastro realizado com sucesso!" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erro ao salvar os dados." });
@@ -52,8 +49,8 @@ async function updateProduct(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if (permissao === 1) {
-            return res.status(403).json({ message: 'Usuário sem permissão' });
+        if(permissao === 1){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
         }
 
         let query, params;
@@ -61,9 +58,9 @@ async function updateProduct(req, res) {
         if (imagem) {
             const [rows] = await connection.execute(
                 "SELECT produtoImagem FROM produto WHERE produtoID = ?",
-                [id]
+                [id] 
             );
-
+            
             if (rows.length > 0) {
                 const imageName = rows[0].produtoImagem;
                 const imagePath = path.join(__dirname, "../uploads/", imageName);
@@ -78,30 +75,25 @@ async function updateProduct(req, res) {
 
             query = "UPDATE produto SET produtoNome = ?, produtoQuantidade = ?, produtoPreco = ?, produtoImagem = ?, fornecedorID = ? WHERE produtoID = ?";
             params = [
-                nome || null,
-                quantidade || null,
-                preco || null,
-                imagem || null,
-                fornecedorSelecionado || null,
+                nome || null, 
+                quantidade || null, 
+                preco || null, 
+                imagem || null, 
+                fornecedorSelecionado || null, 
                 id || null
             ];
         } else {
             query = "UPDATE produto SET produtoNome = ?, produtoQuantidade = ?, produtoPreco = ?, fornecedorID = ? WHERE produtoID = ?";
             params = [
-                nome || null,
-                quantidade || null,
-                preco || null,
-                fornecedorSelecionado || null,
+                nome || null, 
+                quantidade || null, 
+                preco || null, 
+                fornecedorSelecionado || null, 
                 id || null
             ];
         }
 
         const [result] = await connection.execute(query, params);
-
-        const dataHoraCadastro = new Date().toLocaleString();
-        const historico = `Usuário '${emailLogado}' alterou o produto (${nome}) às ${dataHoraCadastro}`
-
-        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
             res.status(200).json({ message: 'Produto atualizado com sucesso' });
@@ -118,15 +110,15 @@ async function updateProduct(req, res) {
 
 async function deleteProduct(req, res) {
     const { id } = req.params;
-    const { emailLogado, produtoNome } = req.body;
+    const { emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if (permissao !== 3) {
-            return res.status(403).json({ message: 'Usuário sem permissão' });
+        if(permissao !== 3){
+            return res.status(403).json({ message: 'Usuário sem permissão'});
         }
 
         const [rows] = await connection.execute(
@@ -135,20 +127,18 @@ async function deleteProduct(req, res) {
         );
 
         if (rows.length === 0) {
-            return res.status(404).json({ success: false, message: "Produto não encontrado!" });
+            return res
+                .status(404)
+                .json({ success: false, message: "Produto não encontrado!" });
         }
 
         const imageName = rows[0].produtoImagem;
         const imagePath = path.join(__dirname, "../uploads/", imageName);
 
         const [result] = await connection.execute(
-            "DELETE FROM produto WHERE produtoID = ?", [id]
+            "DELETE FROM produto WHERE produtoID = ?",
+            [id]
         );
-
-        const dataHoraCadastro = new Date().toLocaleString();
-        const historico = `Usuário '${emailLogado}' excluiu o produto (${produtoNome}) às ${dataHoraCadastro}`
-
-        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
             fs.unlink(imagePath, (err) => {
@@ -165,11 +155,15 @@ async function deleteProduct(req, res) {
                 });
             });
         } else {
-            res.status(404).json({ success: false, message: "Produto não encontrado!" });
+            res
+                .status(404)
+                .json({ success: false, message: "Produto não encontrado!" });
         }
     } catch (error) {
         console.error("Erro ao excluir produto:", error);
-        res.status(500).json({ success: false, message: "Erro ao excluir produto!" });
+        res
+            .status(500)
+            .json({ success: false, message: "Erro ao excluir produto!" });
     } finally {
         if (connection) connection.release();
     }

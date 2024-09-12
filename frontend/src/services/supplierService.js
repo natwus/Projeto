@@ -52,13 +52,13 @@ export const updateSupplier = async (fornecedorID, nome, estado, telefone, email
     return response.json();
 };
 
-export const delSupplier = async (fornecedorID, emailLogado, fornecedorNome) => {
+export const delSupplier = async (fornecedorID, emailLogado) => {
     const response = await fetch(`${BASE_URL}/supplier/deleteSupplier/${fornecedorID}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ emailLogado, fornecedorNome })
+        body: JSON.stringify({ emailLogado })
     });
     return response.json();
 };

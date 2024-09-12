@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { getLogs } from "../../services/productService";
 import { useEffect, useState } from "react";
@@ -10,11 +11,7 @@ function Inicio() {
     useEffect(() => {
         async function fetchLogs() {
             try {
-                let data = await getLogs();
-                if (data.length > 15) {
-                    data = data.slice(-15);
-                }
-                data = data.reverse();
+                const data = await getLogs();
                 setLogs(data);
             } catch (error) {
                 console.error('Erro ao buscar os usuários:', error);
@@ -26,6 +23,17 @@ function Inicio() {
 
     return (
         <>
+            <h1>Cadastro</h1>
+            <Link to={"/cadastroUsuario"}>Cadastro de Usuario / </Link>
+            <Link to={"/cadastroFornecedor"}>Cadastro de Fornecedor / </Link>
+            <Link to={"/cadastroProduto"}>Cadastro de Produto / </Link>
+            <br />
+            <h1>Consulta</h1>
+            <Link to={"/usuarios"}>Usuarios / </Link>
+            <Link to={"/fornecedores"}>Fornecedores / </Link>
+            <Link to={"/produtos"}>Produtos / </Link>
+            <br />
+            <br />
             <table border={1}>
                 <thead>
                     <tr>

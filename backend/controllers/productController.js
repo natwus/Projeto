@@ -156,10 +156,7 @@ async function deleteProduct(req, res) {
                     return res.status(500).json({ success: false, message: "Erro ao excluir a imagem!" });
                 }
 
-                res.status(200).json({
-                    success: true,
-                    message: "Produto e imagem excluídos com sucesso!",
-                });
+                res.status(200).json({ success: true, message: "Produto e imagem excluídos com sucesso!" });
             });
         } else {
             res.status(404).json({ success: false, message: "Produto não encontrado!" });

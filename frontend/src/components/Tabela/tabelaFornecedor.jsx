@@ -52,8 +52,8 @@ function TabelaFornecedor() {
         }
     };
 
-    const editarFornecedor = (fornecedorID, fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria, nomeCategoria) => {
-        navigate('/alterarFornecedor', { state: { fornecedorID, fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria, nomeCategoria } });
+    const editarFornecedor = (fornecedorID, fornecedorNome, estadoID, fornecedorTelefone, fornecedorEmail, idCategoria) => {
+        navigate('/alterarFornecedor', { state: { fornecedorID, fornecedorNome, estadoID, fornecedorTelefone, fornecedorEmail, idCategoria } });
     }
 
     return (
@@ -84,7 +84,7 @@ function TabelaFornecedor() {
                                 <button onClick={() => deletarFornecedor(fornecedor.fornecedorID, fornecedor.fornecedorNome)}>
                                     Excluir
                                 </button>
-                                <button onClick={() => editarFornecedor(fornecedor.fornecedorID, fornecedor.fornecedorNome,fornecedor.fornecedorEstado, fornecedor.fornecedorTelefone, fornecedor.fornecedorEmail, fornecedor.idCategoria, fornecedor.nomeCategoria)}>
+                                <button onClick={() => editarFornecedor(fornecedor.fornecedorID, fornecedor.fornecedorNome, fornecedor.estadoID, fornecedor.fornecedorTelefone, fornecedor.fornecedorEmail, fornecedor.idCategoria)}>
                                     Editar
                                 </button>
                             </td>

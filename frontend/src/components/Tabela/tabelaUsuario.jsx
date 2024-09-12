@@ -46,8 +46,8 @@ function TabelaUsuario() {
         }
     };
 
-    const editarUsuario = (usuarioID, usuarioNome, usuarioUsuario) => {
-        navigate('/alterarUsuario', { state: { usuarioID, usuarioNome, usuarioUsuario } });
+    const editarUsuario = (usuarioID, usuarioNome, usuarioUsuario, permissaoID) => {
+        navigate('/alterarUsuario', { state: { usuarioID, usuarioNome, usuarioUsuario, permissaoID } });
     }
 
     return (
@@ -74,7 +74,7 @@ function TabelaUsuario() {
                                 <button onClick={() => deletarUsuario(usuario.usuarioID, usuario.usuarioNome, usuario.usuarioUsuario)}>
                                     Excluir
                                 </button>
-                                <button onClick={() => editarUsuario(usuario.usuarioID, usuario.usuarioNome, usuario.usuarioUsuario)}>
+                                <button onClick={() => editarUsuario(usuario.usuarioID, usuario.usuarioNome, usuario.usuarioUsuario, usuario.permissaoID)}>
                                     Editar
                                 </button>
                             </td>

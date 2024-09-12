@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { updateUser } from '../../services/userService';
+import { getPermissoes, updateUser } from '../../services/userService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { jwtDecode } from 'jwt-decode';
 
 function EditarUsuario() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { usuarioID, usuarioNome, usuarioUsuario } = location.state || {};
+    const { usuarioID, usuarioNome, usuarioUsuario, permissaoID } = location.state || {};
     const [nome, setNome] = useState(usuarioNome || '');
     const [email, setEmail] = useState(usuarioUsuario || '');
     const [senha, setSenha] = useState('');
+    const [permissoes, setPermissoes] = useState([]);
+    const [permissaoSelecionada, setPermissaoSelecionada] = useState(permissaoID || '')
     const token = localStorage.getItem('token');
 
     let emailLogado;
@@ -22,19 +24,23 @@ function EditarUsuario() {
     useSessionTimeout();
 
     useEffect(() => {
-        setNome(usuarioNome || '');
-        setEmail(usuarioUsuario || '');
-    }, [usuarioNome, usuarioUsuario]);
+        const fetchPermissoes = async () => {
+            try {
+                const permissao = await getPermissoes();
+                setPermissoes(permissao);
+            } catch (error){
+                console.error('Erro ao buscar permissoes:', error);
+            }
+        };
 
-    const handleVoltar = () => {
-        navigate(-1);
-    };
+        fetchPermissoes();
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const data = await updateUser(usuarioID, nome, email, senha || undefined, emailLogado);
+            const data = await updateUser(usuarioID, nome, email, senha || undefined, permissaoSelecionada, emailLogado);
 
             if (data.success) {
                 alert('Usuário atualizado com sucesso!');
@@ -72,9 +78,21 @@ function EditarUsuario() {
                     name="usuarioSenha"
                     onChange={(e) => setSenha(e.target.value)}
                 />
+                <label>Permissão:</label>
+                <select
+                    name="permissao"
+                    value={permissaoSelecionada}
+                    onChange={(e) => setPermissaoSelecionada(e.target.value)}
+                >
+                    <option value="">Selecione a permissão</option>
+                    {permissoes.map((permissao) => (
+                        <option key={permissao.permissaoID} value={permissao.permissaoID}>
+                            {permissao.permissaoNome}
+                        </option>
+                    ))}
+                </select>
                 <button type="submit">Salvar</button>
             </form>
-            <button onClick={handleVoltar}>Voltar</button>
         </div>
     );
 }

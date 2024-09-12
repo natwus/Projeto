@@ -84,7 +84,8 @@ async function getUsers(req, res) {
                     usuario.usuarioNome, 
                     usuario.usuarioUsuario, 
                     usuario.usuarioSenha,
-                    permissao.permissaoNome
+                    permissao.permissaoNome,
+                    permissao.permissaoID
             FROM usuario
             JOIN permissao ON permissao.permissaoID = usuario.permissaoID;`);
         res.status(200).json(rows);
@@ -131,7 +132,7 @@ async function getUserName(req, res) {
 };
 
 async function updateUser(req, res) {
-    const { usuarioID, nome, email, senha, emailLogado } = req.body;
+    const { usuarioID, nome, email, senha, permissaoSelecionada, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
@@ -146,11 +147,11 @@ async function updateUser(req, res) {
 
         if (senha) {
             const hashedPassword = await bcrypt.hash(senha, 10);
-            query = 'UPDATE usuario SET usuarioNome = ?, usuarioUsuario = ?, usuarioSenha = ? WHERE usuarioID = ?';
-            params = [nome, email, hashedPassword, usuarioID];
+            query = 'UPDATE usuario SET usuarioNome = ?, usuarioUsuario = ?, usuarioSenha = ?, permissaoID = ? WHERE usuarioID = ?';
+            params = [nome, email, hashedPassword, permissaoSelecionada, usuarioID];
         } else {
-            query = 'UPDATE usuario SET usuarioNome = ?, usuarioUsuario = ? WHERE usuarioID = ?';
-            params = [nome, email, usuarioID];
+            query = 'UPDATE usuario SET usuarioNome = ?, usuarioUsuario = ?, permissaoID = ? WHERE usuarioID = ?';
+            params = [nome, email, permissaoSelecionada, usuarioID];
         }
 
         const [result] = await connection.execute(query, params);

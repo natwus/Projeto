@@ -60,13 +60,14 @@ export const getUsers = async () => {
     return response.json();
 };
 
-export const updateUser = async (usuarioID, nome, email, senha, emailLogado) => {
+export const updateUser = async (usuarioID, nome, email, senha, permissaoSelecionada, emailLogado) => {
     const body = {
         usuarioID,
         nome,
         email,
         ...(senha && { senha }),
-        emailLogado
+        emailLogado,
+        permissaoSelecionada
     };
 
     const response = await fetch(`${BASE_URL}/user/updateUser`, {

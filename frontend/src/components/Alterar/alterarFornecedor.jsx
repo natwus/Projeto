@@ -1,16 +1,17 @@
 //alterar
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getCategorias, updateSupplier } from '../../services/supplierService';
+import { getCategorias, getEstados, updateSupplier } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { jwtDecode } from 'jwt-decode';
 
 function EditarFornecedor() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { fornecedorID, fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria } = location.state || {};
+    const { fornecedorID, fornecedorNome, estadoID, fornecedorTelefone, fornecedorEmail, idCategoria } = location.state || {};
     const [nome, setNome] = useState(fornecedorNome || '');
-    const [estado, setEstado] = useState(fornecedorEstado || '');
+    const [estados, setEstados] = useState([]);
+    const [estadoSelecionado, setEstadoSelecionado] = useState(estadoID || '');
     const [telefone, setTelefone] = useState(fornecedorTelefone || '');
     const [email, setEmail] = useState(fornecedorEmail || '');
     const [categorias, setCategorias] = useState([]);
@@ -26,12 +27,17 @@ function EditarFornecedor() {
     useSessionTimeout();
 
     useEffect(() => {
-        setNome(fornecedorNome || '');
-        setEstado(fornecedorEstado || '');
-        setTelefone(fornecedorTelefone || '');
-        setEmail(fornecedorEmail || '');
-        setCategoriaSelecionada(idCategoria || '');
-    }, [fornecedorNome, fornecedorEstado, fornecedorTelefone, fornecedorEmail, idCategoria]);
+        const fetchEstados = async () => {
+            try {
+                const estado = await getEstados();
+                setEstados(estado);
+            } catch (error) {
+                console.error('Erro ao buscar estados:', error);
+            }
+        };
+
+        fetchEstados();
+    }, []);
 
     useEffect(() => {
         const fetchCategorias = async () => {
@@ -46,14 +52,10 @@ function EditarFornecedor() {
         fetchCategorias();
     }, []);
 
-    const handleVoltar = () => {
-        navigate(-1);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const data = await updateSupplier(fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado);
+            const data = await updateSupplier(fornecedorID, nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado);
 
             if (data.success) {
                 alert('Fornecedor atualizado com sucesso!');
@@ -79,12 +81,18 @@ function EditarFornecedor() {
                     onChange={(e) => setNome(e.target.value)}
                 />
                 <label>Estado</label>
-                <input
-                    type="text"
+                <select
                     name="estado"
-                    value={estado}
-                    onChange={(e) => setEstado(e.target.value)}
-                />
+                    value={estadoSelecionado}
+                    onChange={(e) => setEstadoSelecionado(e.target.value)}
+                >
+                    <option value="">Selecione o Estado</option>
+                    {estados.map((estado) => (
+                        <option key={estado.estadoID} value={estado.estadoID}>
+                            {estado.estadoNome}
+                        </option>
+                    ))}
+                </select>
                 <label>Telefone</label>
                 <input
                     type="text"

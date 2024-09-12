@@ -42,7 +42,8 @@ async function getSuppliers(req, res) {
             `SELECT fornecedor.*, 
                     categoria.idCategoria, 
                     categoria.nomeCategoria, 
-                    estado.estadoNome
+                    estado.estadoNome,
+                    estado.estadoID
              FROM fornecedor
              JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria
              JOIN estado ON fornecedor.fornecedorEstado = estado.estadoID;`
@@ -73,7 +74,7 @@ async function getEstados(req, res) {
 };
 
 async function updateSuppliers(req, res) {
-    const { fornecedorID, nome, estado, telefone, email, categoriaSelecionada, emailLogado } = req.body;
+    const { fornecedorID, nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado } = req.body;
     const connection = await connectToDatabase();
 
     try {
@@ -87,7 +88,7 @@ async function updateSuppliers(req, res) {
         let query, params;
 
         query = 'UPDATE fornecedor SET fornecedorNome = ?, fornecedorEstado = ?, fornecedorTelefone = ?, fornecedorEmail = ?, idCategoria = ? WHERE fornecedorID = ?';
-        params = [nome, estado, telefone, email, categoriaSelecionada, fornecedorID];
+        params = [nome, estadoSelecionado, telefone, email, categoriaSelecionada, fornecedorID];
 
         const [result] = await connection.execute(query, params);
 

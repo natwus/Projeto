@@ -38,10 +38,6 @@ function EditarProduto() {
         fetchFornecedores();
     }, []);
 
-    const handleVoltar = () => {
-        navigate(-1);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

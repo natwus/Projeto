@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getPermissoes, registerUser } from '../../services/userService';
 import { jwtDecode } from "jwt-decode";
 
@@ -31,19 +31,15 @@ function Cadastro() {
         emailLogado = decoded.id
     }
 
-    const handleVoltar = () => {
-        navigate(-1); 
-    };
-
     const enviarDados = async (event) => {
         event.preventDefault();
 
         try {
             const data = await registerUser(nome, email, senha, permissaoSelecionada, emailLogado);
 
-            if (data.success) {
+            if (data.sucess) {
                 alert('Cadastro realizado!')
-                navigate('/')
+                navigate('/usuarios')
             } else {
                 alert(data.message)
             }
@@ -92,8 +88,6 @@ function Cadastro() {
                 </select>
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to={"/"}>Já tem cadastro? </Link>
-            <button onClick={handleVoltar}>Voltar</button>
         </div>
     );
 }

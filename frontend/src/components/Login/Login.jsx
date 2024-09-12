@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { enviarEmail } from "./enviarEmail";
 import { fetchUserName, loginUser } from "../../services/userService";
@@ -42,10 +42,6 @@ function Login() {
         }
     }, [loginSuccess, navigate, codigo, email]);
 
-    const handleVoltar = () => {
-        navigate(-1);
-    };
-
     const handleLogin = async (event) => {
         event.preventDefault();
 
@@ -87,8 +83,6 @@ function Login() {
                 />
                 <button type="submit">Entrar</button>
             </form>
-            <Link to={"/cadastroUsuario"}>Não tem cadastro? </Link>
-            <button onClick={handleVoltar}>Voltar</button>
         </>
     );
 }

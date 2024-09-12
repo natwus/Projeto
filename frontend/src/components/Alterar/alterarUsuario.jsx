@@ -42,7 +42,7 @@ function EditarUsuario() {
         try {
             const data = await updateUser(usuarioID, nome, email, senha || undefined, permissaoSelecionada, emailLogado);
 
-            if (data.success) {
+            if (data.sucess) {
                 alert('Usuário atualizado com sucesso!');
                 navigate('/usuarios');
             } else {

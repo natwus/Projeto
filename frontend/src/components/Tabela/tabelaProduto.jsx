@@ -92,7 +92,6 @@ function TabelaProdutos() {
                     ))}
                 </tbody>
             </table>
-            <Link to="/inicio">Início</Link>
         </div>
     );
 }

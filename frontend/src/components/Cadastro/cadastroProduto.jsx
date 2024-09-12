@@ -107,7 +107,6 @@ function CadastroProduto() {
                 </select>
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to={"/inicio"}>Início</Link>
         </div>
     );
 }

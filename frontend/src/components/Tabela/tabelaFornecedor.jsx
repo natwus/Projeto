@@ -92,7 +92,6 @@ function TabelaFornecedor() {
                     ))}
                 </tbody>
             </table>
-            <Link to="/inicio">Voltar ao Início</Link>
         </div>
     );
 }

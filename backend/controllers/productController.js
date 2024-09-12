@@ -104,7 +104,7 @@ async function updateProduct(req, res) {
         await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ message: 'Produto atualizado com sucesso' });
+            res.status(200).json({ sucess: true, message: 'Produto atualizado com sucesso' });
         } else {
             res.status(404).json({ message: "Produto não encontrado" });
         }
@@ -156,7 +156,7 @@ async function deleteProduct(req, res) {
                     return res.status(500).json({ success: false, message: "Erro ao excluir a imagem!" });
                 }
 
-                res.status(200).json({ success: true, message: "Produto e imagem excluídos com sucesso!" });
+                res.status(200).json({ sucess: true, message: "Produto e imagem excluídos com sucesso!" });
             });
         } else {
             res.status(404).json({ success: false, message: "Produto não encontrado!" });

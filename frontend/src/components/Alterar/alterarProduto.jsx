@@ -119,7 +119,6 @@ function EditarProduto() {
                 </select>
                 <button type="submit">Salvar</button>
             </form>
-            <button onClick={handleVoltar}>Voltar</button>
         </div>
     );
 }

@@ -29,9 +29,12 @@ async function registerProduct(req, res) {
             [nome, quantidade, preco, imagem, fornecedorSelecionado]
         );
 
-        res
-            .status(200)
-            .json({ sucess: true, message: "Cadastro realizado com sucesso!" });
+        const dataHoraCadastro = new Date().toLocaleString();
+        const historico = `Usuário '${emailLogado}' cadastrou um novo produto (${nome}) às ${dataHoraCadastro}`
+
+        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
+
+        res.status(200).json({ sucess: true, message: "Cadastro realizado com sucesso!" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erro ao salvar os dados." });
@@ -95,6 +98,11 @@ async function updateProduct(req, res) {
 
         const [result] = await connection.execute(query, params);
 
+        const dataHoraCadastro = new Date().toLocaleString();
+        const historico = `Usuário '${emailLogado}' alterou o produto (${nome}) às ${dataHoraCadastro}`
+
+        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
+
         if (result.affectedRows > 0) {
             res.status(200).json({ message: 'Produto atualizado com sucesso' });
         } else {
@@ -110,7 +118,7 @@ async function updateProduct(req, res) {
 
 async function deleteProduct(req, res) {
     const { id } = req.params;
-    const { emailLogado } = req.body;
+    const { emailLogado, produtoNome } = req.body;
     const connection = await connectToDatabase();
 
     try {
@@ -122,31 +130,30 @@ async function deleteProduct(req, res) {
         }
 
         const [rows] = await connection.execute(
-            "SELECT produtoImagem FROM produto WHERE produtoID = ?",
-            [id]
+            "SELECT produtoImagem FROM produto WHERE produtoID = ?",[id]
         );
 
         if (rows.length === 0) {
-            return res
-                .status(404)
-                .json({ success: false, message: "Produto não encontrado!" });
+            return res.status(404).json({ success: false, message: "Produto não encontrado!" });
         }
 
         const imageName = rows[0].produtoImagem;
         const imagePath = path.join(__dirname, "../uploads/", imageName);
 
         const [result] = await connection.execute(
-            "DELETE FROM produto WHERE produtoID = ?",
-            [id]
+            "DELETE FROM produto WHERE produtoID = ?", [id]
         );
+
+        const dataHoraCadastro = new Date().toLocaleString();
+        const historico = `Usuário '${emailLogado}' excluiu o produto (${produtoNome}) às ${dataHoraCadastro}`
+
+        await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
             fs.unlink(imagePath, (err) => {
                 if (err) {
                     console.error("Erro ao excluir a imagem:", err);
-                    return res
-                        .status(500)
-                        .json({ success: false, message: "Erro ao excluir a imagem!" });
+                    return res.status(500).json({ success: false, message: "Erro ao excluir a imagem!" });
                 }
 
                 res.status(200).json({
@@ -155,15 +162,11 @@ async function deleteProduct(req, res) {
                 });
             });
         } else {
-            res
-                .status(404)
-                .json({ success: false, message: "Produto não encontrado!" });
+            res.status(404).json({ success: false, message: "Produto não encontrado!" });
         }
     } catch (error) {
         console.error("Erro ao excluir produto:", error);
-        res
-            .status(500)
-            .json({ success: false, message: "Erro ao excluir produto!" });
+        res.status(500).json({ success: false, message: "Erro ao excluir produto!" });
     } finally {
         if (connection) connection.release();
     }

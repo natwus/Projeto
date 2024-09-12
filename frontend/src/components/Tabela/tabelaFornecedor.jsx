@@ -31,9 +31,9 @@ function TabelaFornecedor() {
         fetchFornecedores();
     }, []);
 
-    const deletarFornecedor = async (fornecedorID) => {
+    const deletarFornecedor = async (fornecedorID, fornecedorNome) => {
         try {
-            const data = await delSupplier(fornecedorID, emailLogado);
+            const data = await delSupplier(fornecedorID, emailLogado, fornecedorNome);
 
             if (data.success){
                 alert('Fornecedor excluído com sucesso!');
@@ -81,7 +81,7 @@ function TabelaFornecedor() {
                             <td>{fornecedor.fornecedorEmail}</td>
                             <td>{fornecedor.nomeCategoria}</td>
                             <td>
-                                <button onClick={() => deletarFornecedor(fornecedor.fornecedorID)}>
+                                <button onClick={() => deletarFornecedor(fornecedor.fornecedorID, fornecedor.fornecedorNome)}>
                                     Excluir
                                 </button>
                                 <button onClick={() => editarFornecedor(fornecedor.fornecedorID, fornecedor.fornecedorNome,fornecedor.fornecedorEstado, fornecedor.fornecedorTelefone, fornecedor.fornecedorEmail, fornecedor.idCategoria, fornecedor.nomeCategoria)}>

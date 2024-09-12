@@ -114,7 +114,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/cadastroProduto":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/inicio">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -149,7 +149,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/cadastroFornecedor":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -184,7 +184,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/produtos":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -219,7 +219,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/usuarios":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -254,7 +254,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/fornecedores":
                 return (
                     <>
-                        <SidebarButton as={Link} to="/inicio">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -289,8 +289,6 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             case "/inicio":
                 return (
                     <>
-                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Login</SidebarButton>
-
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
                             Cadastro

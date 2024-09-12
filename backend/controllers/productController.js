@@ -56,6 +56,10 @@ async function updateProduct(req, res) {
             return res.status(403).json({ message: 'Usuário sem permissão'});
         }
 
+        if(quantidade < 5){
+            return res.status(401).json({ message: 'Os produtos não podem conter menos de cinco itens no estoque!' })
+        }
+
         let query, params;
 
         if (imagem) {

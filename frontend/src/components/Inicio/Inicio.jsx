@@ -11,8 +11,8 @@ function Inicio() {
         async function fetchLogs() {
             try {
                 let data = await getLogs();
-                if (data.length > 15) {
-                    data = data.slice(-15);
+                if (data.length > 20) {
+                    data = data.slice(-20);
                 }
                 data = data.reverse();
                 setLogs(data);

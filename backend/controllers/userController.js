@@ -11,8 +11,8 @@ async function registerUser(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if(permissao !== 3){
-            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+        if (permissao !== 3) {
+            return res.status(403).json({ message: 'Erro: usuário sem permissão' });
         }
 
         const [rows] = await connection.execute('SELECT usuarioUsuario FROM usuario WHERE usuarioUsuario = ?', [email]);
@@ -58,6 +58,11 @@ async function loginUser(req, res) {
                 secretKey,
                 { expiresIn: '12h' }
             );
+
+            const dataHoraCadastro = new Date().toLocaleString();
+            const historico = `Usuário '${usuario.usuarioNome}' (${usuario.usuarioUsuario}) entrou no sistema às ${dataHoraCadastro}`
+
+            await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
             return res.status(200).json({
                 message: 'Login bem-sucedido!',
@@ -139,8 +144,8 @@ async function updateUser(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID, usuarioUsuario FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if(permissao !== 3){
-            return res.status(403).json({ message: 'Usuário sem permissão'});
+        if (permissao !== 3) {
+            return res.status(403).json({ message: 'Usuário sem permissão' });
         }
 
         let query, params;
@@ -183,8 +188,8 @@ async function deleteUser(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if(permissao !== 3){
-            return res.status(403).json({ message: 'Erro: usuário sem permissão'});
+        if (permissao !== 3) {
+            return res.status(403).json({ message: 'Erro: usuário sem permissão' });
         }
 
         const [result] = await connection.execute('DELETE FROM usuario WHERE usuarioID = ?', [id]);

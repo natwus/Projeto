@@ -31,7 +31,7 @@ function App() {
             <>
                 <Header toggleSidebar={toggleSidebar} isOpen={isSidebarOpen} />
                 <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-                <center style={{marginTop: '150px'}}>
+                <center style={{marginTop: '200px'}}>
                     <Routes>
                         <Route path="/" element={<Login />} />
                         <Route path="/inicio" element={<Inicio />} />

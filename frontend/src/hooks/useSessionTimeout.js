@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
-function useSessionTimeout(inactivityLimit = 120 * 60 * 1000) {
+function useSessionTimeout(inactivityLimit = 90 * 60 * 1000) {
     let inactivityTimer;
     const navigate = useNavigate();
 
@@ -19,12 +19,6 @@ function useSessionTimeout(inactivityLimit = 120 * 60 * 1000) {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
-        if (!token) {
-            alert('Você precisa estar logado!');
-            navigate('/');
-            return;
-        }
 
         try {
             const decodedToken = jwtDecode(token);

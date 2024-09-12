@@ -30,9 +30,9 @@ function TabelaProdutos() {
         fetchProdutos();
     }, []);
 
-    const deletarProduto = async (produtoID) => {
+    const deletarProduto = async (produtoID, produtoNome) => {
         try {
-            const data = await delProduct(produtoID, emailLogado);
+            const data = await delProduct(produtoID, emailLogado, produtoNome);
 
             if (data.sucess) {
                 alert('Produto excluído com sucesso!');
@@ -81,7 +81,7 @@ function TabelaProdutos() {
                             </td>
                             <td>{produto.fornecedorNome}</td>
                             <td>
-                                <button onClick={() => deletarProduto(produto.produtoID)}>
+                                <button onClick={() => deletarProduto(produto.produtoID, produto.produtoNome)}>
                                     Excluir
                                 </button>
                                 <button onClick={() => editarProduto(produto)}>

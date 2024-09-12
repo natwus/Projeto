@@ -53,7 +53,7 @@ function Login() {
             const data = await loginUser(email, senha);
 
             if (data.usuario) {
-                if (email === 'adm@adm.com') {
+                if (email === 'adm@sacolao.com') {
                     navigate('/inicio')
                 }
                 alert('Login bem-sucedido!');

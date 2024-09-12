@@ -11,7 +11,7 @@ function MFA() {
     const VerificarCodigo = (e) => {
         e.preventDefault();
         if (codigo === verifica) {
-            navigate('/home', { state: { email } });
+            navigate('/inicio', { state: { email } });
         } else {
             alert('O código não confere!');
         }

@@ -8,7 +8,7 @@ export function enviarEmail(nome, codigo, email) {
     };
 
     emailjs.send(
-        "service_teno3ly", // Service ID
+        "service_b9e6k0f", // Service ID
         "template_jp8xmxf", // Template ID
         templateParams,
         "ZbyNu_dDhdSR4-sfc" // Public key

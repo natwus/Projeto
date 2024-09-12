@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         nomeUsuario = decoded.nome;
         message = `Olá, ${nomeUsuario} `;
     }
-    
+
     // Funções para alternar a visibilidade dos dropdowns
     const toggleCadastroDropdown = () => {
         setCadastroDropdownOpen(!isCadastroDropdownOpen);
@@ -318,6 +318,12 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         )}
 
                         <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                    </>
+                );
+            case "/mfa":
+                return (
+                    <>
+                        
                     </>
                 );
             default:

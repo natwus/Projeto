@@ -58,7 +58,6 @@ function Cadastro() {
             feedback = 'Senha forte!';
         }
 
-        // Verifica a força da senha, se possui uma letra maiúscula e um caractere especial
         setSenhaForte(result.score >= 3 && possuiLetraMaiuscula(senha) && possuiCaractereEspecial(senha));
         setSenhaFeedback(feedback);
     };

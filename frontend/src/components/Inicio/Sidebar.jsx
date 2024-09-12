@@ -3,6 +3,7 @@ import { SidebarContainer, SidebarButton, Overlay, DropdownButton } from './styl
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { jwtDecode } from "jwt-decode";
+import { FooterBotoesSidebar } from "./Style";
 
 // Componente Sidebar
 const Sidebar = ({ isOpen, closeSidebar }) => {
@@ -74,6 +75,16 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/cadastroUsuario":
@@ -108,7 +119,17 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/cadastroProduto":
@@ -143,13 +164,23 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/cadastroFornecedor":
                 return (
                     <>
-                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -178,13 +209,23 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/produtos":
                 return (
                     <>
-                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -213,13 +254,23 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/usuarios":
                 return (
                     <>
-                        <SidebarButton onClick={closeSidebar} as={Link} to="/">Home</SidebarButton>
+                        <SidebarButton onClick={closeSidebar} as={Link} to="/inicio">Home</SidebarButton>
 
                         {/* Botão do Dropdown de Cadastro */}
                         <SidebarButton as={Link} onClick={toggleCadastroDropdown}>
@@ -248,7 +299,17 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/fornecedores":
@@ -283,7 +344,17 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/inicio":
@@ -317,13 +388,30 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                             </>
                         )}
 
-                        <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        <FooterBotoesSidebar>
+                            <SidebarButton
+                                as={Link}
+                                onClick={closeSidebar}
+                                to='/docs/documento.pdf'
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Documentação
+                            </SidebarButton>
+                            <SidebarButton as={Link} onClick={handleLogoff} to='/'>Sair</SidebarButton>
+                        </FooterBotoesSidebar>
                     </>
                 );
             case "/mfa":
                 return (
                     <>
-                        
+                        <SidebarButton
+                            as={Link}
+                            onClick={closeSidebar}
+                            to='/docs/documento.pdf'
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            Documentação
+                        </SidebarButton>
                     </>
                 );
             default:

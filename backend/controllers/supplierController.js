@@ -8,8 +8,8 @@ async function registerSupplier(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if(permissao !== 3){
-            return res.status(403).json({ message: 'Usuário sem permissão'});
+        if (permissao !== 3) {
+            return res.status(403).json({ message: 'Usuário sem permissão' });
         }
 
         const [rows] = await connection.execute('SELECT fornecedorNome FROM fornecedor WHERE fornecedorNome = ?', [nome]);
@@ -40,13 +40,15 @@ async function getSuppliers(req, res) {
     try {
         const [rows] = await connection.execute(
             `SELECT fornecedor.*, 
-                    categoria.idCategoria, 
-                    categoria.nomeCategoria, 
-                    estado.estadoNome,
-                    estado.estadoID
-             FROM fornecedor
-             JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria
-             JOIN estado ON fornecedor.fornecedorEstado = estado.estadoID;`
+                categoria.idCategoria, 
+                categoria.nomeCategoria, 
+                estado.estadoNome, 
+                estado.estadoID
+            FROM fornecedor
+            JOIN categoria ON fornecedor.idCategoria = categoria.idCategoria
+            JOIN estado ON fornecedor.fornecedorEstado = estado.estadoID
+            ORDER BY RAND();
+            `
         );
         res.status(200).json(rows);
     } catch (error) {
@@ -81,8 +83,8 @@ async function updateSuppliers(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if(permissao !== 3){
-            return res.status(403).json({ message: 'Usuário sem permissão'});
+        if (permissao !== 3) {
+            return res.status(403).json({ message: 'Usuário sem permissão' });
         }
 
         let query, params;
@@ -119,8 +121,8 @@ async function deleteSupplier(req, res) {
         const [permissoes] = await connection.execute('SELECT permissaoID FROM usuario WHERE usuarioUsuario = ?', [emailLogado]);
         const permissao = permissoes[0].permissaoID;
 
-        if(permissao !== 3){
-            return res.status(403).json({ message: 'Usuário sem permissão'});
+        if (permissao !== 3) {
+            return res.status(403).json({ message: 'Usuário sem permissão' });
         }
 
         const [result] = await connection.execute('DELETE FROM fornecedor WHERE fornecedorID = ?', [id]);

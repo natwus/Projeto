@@ -1,7 +1,7 @@
 # Sacolão Senai
 
 ## Descrição
-Projeto desenvolvido em sala de aula no Senai Votuporanga com o objetivo de gerenciar o estoque de um sacolão. Ele permite o cadastro, alteração e exclusão de usuários, fornecedores e produtos, além de controlar permissões de usuários.
+Projeto desenvolvido em sala de aula no Senai Votuporanga com o objetivo de gerenciar o estoque de um supermercado. Ele permite o cadastro, alteração e exclusão de usuários, fornecedores e produtos, além de controlar permissões de usuários.
 
 ## Funcionalidades Principais
 - **Cadastro, alteração e exclusão de usuários, fornecedores e produtos.**
@@ -96,9 +96,3 @@ Projeto desenvolvido em sala de aula no Senai Votuporanga com o objetivo de gere
 │ 
 └── App.jsx # Componente principal 
 └── projeto.mwb # Modelo do banco de dados
-
-
-## Ambiente de Desenvolvimento
-- **Visualizador:** Apenas visualiza as tabelas.
-- **Padrão (Funcionário):** Pode cadastrar e alterar produtos.
-- **Administrador:** Permissão completa para gerenciar usuários, fornecedores e produtos.

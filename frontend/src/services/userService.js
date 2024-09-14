@@ -80,8 +80,8 @@ export const updateUser = async (usuarioID, nome, email, senha, permissaoSelecio
     return response.json();
 };
 
-export const delUser = async (userID, emailLogado, usuarioNome, usuarioUsuario) => {
-    const response = await fetch(`${BASE_URL}/user/deleteUser/${userID}`, {
+export const delUser = async (usuarioIDParaExcluir, emailLogado, usuarioNome, usuarioUsuario) => {
+    const response = await fetch(`${BASE_URL}/user/deleteUser/${usuarioIDParaExcluir}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

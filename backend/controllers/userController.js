@@ -200,13 +200,13 @@ async function deleteUser(req, res) {
         await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ success: true, message: 'Usuário excluído com sucesso!' });
+            res.status(200).json({ sucess: true, message: 'Usuário excluído com sucesso!' });
         } else {
-            res.status(404).json({ success: false, message: 'Usuário não encontrado!' });
+            res.status(404).json({ sucess: false, message: 'Usuário não encontrado!' });
         }
     } catch (error) {
         console.error('Erro ao excluir usuário:', error);
-        res.status(500).json({ success: false, message: 'Erro ao excluir usuário!' });
+        res.status(500).json({ sucess: false, message: 'Erro ao excluir usuário!' });
     } finally {
         if (connection) connection.release();
     }

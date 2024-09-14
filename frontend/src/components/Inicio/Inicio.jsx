@@ -1,6 +1,7 @@
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { getLogs } from "../../services/productService";
 import { useEffect, useState } from "react";
+import { Container, Table, Td, Th } from '../Style/TableStyle/tableStyle';
 
 function Inicio() {
     const [logs, setLogs] = useState([]);
@@ -25,20 +26,22 @@ function Inicio() {
     }, []);
 
     return (
-            <table border={1}>
+        <Container>
+            <Table border={1} style={{marginTop: '20px'}}>
                 <thead>
                     <tr>
-                        <th>Histórico</th>
+                        <Th>Histórico</Th>
                     </tr>
                 </thead>
                 <tbody>
                     {logs.map((log) => (
                         <tr key={log.historicoID}>
-                            <td>{log.historicoDescricao}</td>
+                            <Td>{log.historicoDescricao}</Td>
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </Table>
+        </Container>
     )
 }
 

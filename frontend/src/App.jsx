@@ -31,7 +31,6 @@ function App() {
             <>
                 <Header toggleSidebar={toggleSidebar} isOpen={isSidebarOpen} />
                 <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-                <center style={{marginTop: '200px'}}>
                     <Routes>
                         <Route path="/" element={<Login />} />
                         <Route path="/inicio" element={<Inicio />} />
@@ -46,7 +45,6 @@ function App() {
                         <Route path="/alterarProduto" element={<AlterarProd />} />
                         <Route path="/mfa" element={<MFA />} />
                     </Routes>
-                </center>
             </>
         </BrowserRouter>
     );

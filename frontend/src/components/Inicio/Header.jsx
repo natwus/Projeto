@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderContainer, Title, MenuButton } from './styles';
+import { HeaderContainer, Title, MenuButton } from '../Style/HeaderStyle/headerStyle';
 
 const Header = ({ toggleSidebar, isOpen }) => {
     return (

@@ -21,8 +21,8 @@ export const updateProduct = async (formData) => {
     return response.json();
 };
 
-export const delProduct = async (produtoID, emailLogado, produtoNome) => {
-    const response = await fetch(`${BASE_URL}/product/deleteProduct/${produtoID}`, {
+export const delProduct = async (produtoIDParaExcluir, emailLogado, produtoNome) => {
+    const response = await fetch(`${BASE_URL}/product/deleteProduct/${produtoIDParaExcluir}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

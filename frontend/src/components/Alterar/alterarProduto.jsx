@@ -4,6 +4,8 @@ import { getFornecedores } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { updateProduct } from '../../services/productService';
 import { jwtDecode } from 'jwt-decode';
+import { FormContainer, FormTitle, Input, SubmitButton, StyledSelect, Label, InputField, StyledForm, StyledOption } from '../Style/FormStyle/formStyle';
+import { ModalContainer, ModalContent, CloseButton } from '../Style/ModalStyle/modalStyle';
 
 function EditarProduto() {
     const navigate = useNavigate();
@@ -16,6 +18,9 @@ function EditarProduto() {
     const [fornecedores, setFornecedores] = useState([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState(produto?.fornecedorID || '');
     const token = localStorage.getItem('token');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalStyle, setModalStyle] = useState({});
 
     let emailLogado;
     if (token) {
@@ -53,10 +58,13 @@ function EditarProduto() {
             const data = await updateProduct(formData);
 
             if (data.sucess) {
-                alert('Produto atualizado com sucesso!');
-                navigate('/produtos');
+                setModalMessage('Produto atualizado com sucesso!');
+                setModalStyle({ backgroundColor: '#83e509', color: 'white' });
+                setIsModalOpen(true);
             } else {
-                alert(data.message);
+                setModalMessage('Erro: ' + data.message);
+                setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
+                setIsModalOpen(true);
             }
         } catch (error) {
             console.error(error);
@@ -64,58 +72,87 @@ function EditarProduto() {
         }
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        if (modalStyle.backgroundColor === '#83e509') {
+            navigate('/produtos');
+        }
+    };
 
     const handleImageChange = (e) => {
         setImagem(e.target.files[0] || null);
     };
 
     return (
-        <div>
-            <h1>Editar Produto</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Nome</label>
-                <input
-                    type="text"
-                    name="nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                />
-                <label>Quantidade</label>
-                <input
-                    type="number"
-                    name="quantidade"
-                    value={quantidade}
-                    onChange={(e) => setQuantidade(e.target.value)}
-                />
-                <label>Preço</label>
-                <input
-                    type="text"
-                    name="preco"
-                    value={preco}
-                    onChange={(e) => setPreco(e.target.value)}
-                />
-                <label>Imagem</label>
-                <input
-                    type="file"
-                    name="imagem"
-                    onChange={handleImageChange}
-                />
-                <label>Fornecedor</label>
-                <select
-                    name="fornecedor"
-                    value={fornecedorSelecionado}
-                    onChange={(e) => setFornecedorSelecionado(e.target.value)}
-                >
-                    <option value="">Selecione um fornecedor</option>
-                    {fornecedores.map((fornecedor) => (
-                        <option key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
-                            {fornecedor.fornecedorNome} - {fornecedor.nomeCategoria}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Salvar</button>
-            </form>
-        </div>
+        <>
+            <FormContainer>
+                <FormTitle>Editar Produto</FormTitle>
+                <StyledForm onSubmit={handleSubmit}>
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="nome"
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                        />
+                        <Label htmlFor='nome'>Nome</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="number"
+                            name="quantidade"
+                            value={quantidade}
+                            onChange={(e) => setQuantidade(e.target.value)}
+                        />
+                        <Label htmlFor='quantidade'>Quantidade</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="preco"
+                            value={preco}
+                            onChange={(e) => setPreco(e.target.value)}
+                        />
+                        <Label htmlFor='preco'>Preço</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="file"
+                            name="imagem"
+                            onChange={handleImageChange}
+                        />
+                        <Label htmlFor='imagem'>Imagem</Label>
+                    </InputField>
+
+                    <Label>Fornecedor</Label>
+                    <StyledSelect
+                        name="fornecedor"
+                        value={fornecedorSelecionado}
+                        onChange={(e) => setFornecedorSelecionado(e.target.value)}
+                    >
+                        <StyledOption value="">Selecione um fornecedor</StyledOption>
+                        {fornecedores.map((fornecedor) => (
+                            <StyledOption key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
+                                {fornecedor.fornecedorNome} - {fornecedor.nomeCategoria}
+                            </StyledOption>
+                        ))}
+                    </StyledSelect>
+                    <SubmitButton type="submit">Salvar</SubmitButton>
+                </StyledForm>
+            </FormContainer>
+
+            {isModalOpen && (
+                <ModalContainer>
+                    <ModalContent style={modalStyle}>
+                        <p>{modalMessage}</p>
+                        <CloseButton onClick={handleCloseModal}>Fechar</CloseButton>
+                    </ModalContent>
+                </ModalContainer>
+            )}
+        </>
     );
 }
 

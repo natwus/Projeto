@@ -85,7 +85,7 @@ function Cadastro() {
                     setModalStyle({ backgroundColor: '#83e509', color: 'white' });
                     setIsModalOpen(true);
                 } else {
-                    setModalMessage(data.message);
+                    setModalMessage('Erro: ' + data.message);
                     setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
                     setIsModalOpen(true);
                 }

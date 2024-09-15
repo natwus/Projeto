@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getCategorias, getEstados, updateSupplier } from '../../services/supplierService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { jwtDecode } from 'jwt-decode';
+import { FormContainer, FormTitle, Input, SubmitButton, StyledSelect, Label, InputField, StyledForm, StyledOption } from '../Style/FormStyle/formStyle';
+import { ModalContainer, ModalContent, CloseButton } from '../Style/ModalStyle/modalStyle';
 
 function EditarFornecedor() {
     const navigate = useNavigate();
@@ -17,6 +19,9 @@ function EditarFornecedor() {
     const [categorias, setCategorias] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(idCategoria || '');
     const token = localStorage.getItem('token');
+    const [modalMessage, setModalMessage] = useState(''); // Estado para mensagem do modal
+    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controle do modal
+    const [modalStyle, setModalStyle] = useState({});
 
     let emailLogado;
     if (token) {
@@ -57,11 +62,14 @@ function EditarFornecedor() {
         try {
             const data = await updateSupplier(fornecedorID, nome, estadoSelecionado, telefone, email, categoriaSelecionada, emailLogado);
 
-            if (data.success) {
-                alert('Fornecedor atualizado com sucesso!');
-                navigate('/fornecedores');
+            if (data.sucess) {
+                setModalMessage('Fornecedor atualizado com sucesso!');
+                setModalStyle({ backgroundColor: '#83e509', color: 'white' });
+                setIsModalOpen(true);
             } else {
-                alert(data.message);
+                setModalMessage('Erro: ' + data.message);
+                setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
+                setIsModalOpen(true);
             }
         } catch (error) {
             console.error(error);
@@ -69,60 +77,88 @@ function EditarFornecedor() {
         }
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        if (modalStyle.backgroundColor === '#83e509') {
+            navigate('/fornecedores');
+        }
+    };
+
     return (
-        <div>
-            <h1>Editar Fornecedor</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Nome</label>
-                <input
-                    type="text"
-                    name="nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                />
-                <label>Estado</label>
-                <select
-                    name="estado"
-                    value={estadoSelecionado}
-                    onChange={(e) => setEstadoSelecionado(e.target.value)}
-                >
-                    <option value="">Selecione o Estado</option>
-                    {estados.map((estado) => (
-                        <option key={estado.estadoID} value={estado.estadoID}>
-                            {estado.estadoNome}
-                        </option>
-                    ))}
-                </select>
-                <label>Telefone</label>
-                <input
-                    type="text"
-                    name="telefone"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
-                />
-                <label>E-mail</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <label>Categoria</label>
-                <select
-                    name="categoria"
-                    value={categoriaSelecionada}
-                    onChange={(e) => setCategoriaSelecionada(e.target.value)}
-                >
-                    <option value="">Selecione uma categoria</option>
-                    {categorias.map((categoria) => (
-                        <option key={categoria.idCategoria} value={categoria.idCategoria}>
-                            {categoria.nomeCategoria}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Salvar</button>
-            </form>
-        </div>
+        <>
+            <FormContainer>
+                <FormTitle>Editar Fornecedor</FormTitle>
+                <StyledForm onSubmit={handleSubmit}>
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="nome"
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                        />
+                        <Label htmlFor='nome'>Nome</Label>
+                    </InputField>
+
+                    <Label>Estado</Label>
+                    <StyledSelect
+                        name="estado"
+                        value={estadoSelecionado}
+                        onChange={(e) => setEstadoSelecionado(e.target.value)}
+                    >
+                        <StyledOption value="">Selecione o Estado</StyledOption>
+                        {estados.map((estado) => (
+                            <StyledOption key={estado.estadoID} value={estado.estadoID}>
+                                {estado.estadoNome}
+                            </StyledOption>
+                        ))}
+                    </StyledSelect>
+
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="telefone"
+                            value={telefone}
+                            onChange={(e) => setTelefone(e.target.value)}
+                        />
+                        <Label htmlFor='telefone'>Telefone</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <Label htmlFor='email'>E-mail</Label>
+                    </InputField>
+
+                    <Label>Categoria</Label>
+                    <StyledSelect
+                        name="categoria"
+                        value={categoriaSelecionada}
+                        onChange={(e) => setCategoriaSelecionada(e.target.value)}
+                    >
+                        <StyledOption value="">Selecione uma categoria</StyledOption>
+                        {categorias.map((categoria) => (
+                            <StyledOption key={categoria.idCategoria} value={categoria.idCategoria}>
+                                {categoria.nomeCategoria}
+                            </StyledOption>
+                        ))}
+                    </StyledSelect>
+                    <SubmitButton type="submit">Salvar</SubmitButton>
+                </StyledForm>
+            </FormContainer>
+
+            {isModalOpen && (
+                <ModalContainer>
+                    <ModalContent style={modalStyle}>
+                        <p>{modalMessage}</p>
+                        <CloseButton onClick={handleCloseModal}>Fechar</CloseButton>
+                    </ModalContent>
+                </ModalContainer>
+            )}
+        </>
     );
 }
 

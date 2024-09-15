@@ -4,6 +4,8 @@ import { getFornecedores } from '../../services/supplierService'
 import { registerProduct } from '../../services/productService'
 import useSessionTimeout from '../../hooks/useSessionTimeout'
 import { jwtDecode } from "jwt-decode";
+import { FormContainer, FormTitle, Input, SubmitButton, StyledSelect, Label, InputField, StyledForm, StyledOption } from '../Style/FormStyle/formStyle';
+import { ModalContainer, ModalContent, CloseButton } from "../Style/ModalStyle/modalStyle";
 
 function CadastroProduto() {
     const [nome, setNome] = useState('');
@@ -14,6 +16,9 @@ function CadastroProduto() {
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState('');
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalStyle, setModalStyle] = useState({});
 
     let emailLogado;
     if (token) {
@@ -51,63 +56,99 @@ function CadastroProduto() {
             const data = await registerProduct(formData);
 
             if (data.sucess) {
-                alert('Cadastro realizado!');
-                navigate('/produtos');
+                setModalMessage('Cadastro realizado!');
+                setModalStyle({ backgroundColor: '#83e509', color: 'white' });
+                setIsModalOpen(true);
             } else {
-                alert(data.message);
+                setModalMessage('Erro: ' + data.message);
+                setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
+                setIsModalOpen(true);
             }
         } catch (error) {
             console.error('Erro ao enviar os dados:', error);
         }
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        if (modalStyle.backgroundColor === '#83e509') {
+            navigate('/produtos');
+        }
+    };
+
     return (
-        <div>
-            <h1>Cadastro Produto</h1>
-            <form onSubmit={enviarDados}>
-                <label>Nome</label>
-                <input
-                    type="text"
-                    name="nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                />
-                <label>Quantidade</label>
-                <input
-                    type="text"
-                    name="quantidade"
-                    value={quantidade}
-                    onChange={(e) => setQuantidade(e.target.value)}
-                />
-                <label>Preço</label>
-                <input
-                    type="text"
-                    name="preco"
-                    value={preco}
-                    onChange={(e) => setPreco(e.target.value)}
-                />
-                <label>Imagem</label>
-                <input
-                    type="file"
-                    name="imagem"
-                    onChange={(e) => setImagem(e.target.files[0])}
-                />
-                <label>Fornecedor</label>
-                <select
-                    name="fornecedor"
-                    value={fornecedorSelecionado}
-                    onChange={(e) => setFornecedorSelecionado(e.target.value)}
-                >
-                    <option value="">Selecione um fornecedor</option>
-                    {fornecedor.map((fornecedor) => (
-                        <option key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
-                            {fornecedor.fornecedorNome} - {fornecedor.nomeCategoria}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Cadastrar</button>
-            </form>
-        </div>
+        <>
+            <FormContainer>
+                <FormTitle>Cadastro Produto</FormTitle>
+                <StyledForm onSubmit={enviarDados}>
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="nome"
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                            placeholder=""
+                        />
+                        <Label htmlFor="nome">Nome</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="quantidade"
+                            value={quantidade}
+                            onChange={(e) => setQuantidade(e.target.value)}
+                            placeholder=""
+                        />
+                        <Label htmlFor="quantidade">Quantidade</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="preco"
+                            value={preco}
+                            onChange={(e) => setPreco(e.target.value)}
+                            placeholder=""
+                        />
+                        <Label htmlFor="preco">Preço</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="file"
+                            name="imagem"
+                            accept="image/*"
+                            onChange={(e) => setImagem(e.target.files[0])}
+                        />
+                    </InputField>
+
+                    <Label>Fornecedor</Label>
+                    <StyledSelect
+                        name="fornecedor"
+                        value={fornecedorSelecionado}
+                        onChange={(e) => setFornecedorSelecionado(e.target.value)}
+                    >
+                        <StyledOption value="">Selecione um fornecedor</StyledOption>
+                        {fornecedor.map((fornecedor) => (
+                            <StyledOption key={fornecedor.fornecedorID} value={fornecedor.fornecedorID}>
+                                {fornecedor.fornecedorNome} - {fornecedor.nomeCategoria}
+                            </StyledOption>
+                        ))}
+                    </StyledSelect>
+                    <SubmitButton type="submit">Cadastrar</SubmitButton>
+                </StyledForm>
+            </FormContainer>
+
+            {isModalOpen && (
+                <ModalContainer>
+                    <ModalContent style={modalStyle}>
+                        <p>{modalMessage}</p>
+                        <CloseButton onClick={handleCloseModal}>Fechar</CloseButton>
+                    </ModalContent>
+                </ModalContainer>
+            )}
+        </>
     );
 }
 

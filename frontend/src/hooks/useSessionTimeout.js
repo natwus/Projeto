@@ -25,9 +25,7 @@ function useSessionTimeout(inactivityLimit = 90 * 60 * 1000) {
             const currentTime = Date.now() / 1000;
 
             if (decodedToken.exp < currentTime) {
-                alert('Sua sessão expirou. Por favor, faça login novamente.');
                 localStorage.removeItem('token');
-                navigate('/');
             } else {
                 resetInactivityTimer();
                 window.addEventListener('mousemove', resetInactivityTimer);

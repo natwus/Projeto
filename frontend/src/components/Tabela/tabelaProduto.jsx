@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { getProducts, delProduct } from "../../services/productService";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useSessionTimeout from "../../hooks/useSessionTimeout";
 import { jwtDecode } from "jwt-decode";
+import { AcaoButton, Container, Table, Th, Td } from "../Style/TableStyle/tableStyle";
+import { Title } from "../Style/HeaderStyle/headerStyle";
+import { ModalContainer, ModalContent } from '../Style/ModalStyle/modalStyle';
 
 function TabelaProdutos() {
     const [produtos, setProdutos] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [produtoIDParaExcluir, setProdutoIDParaExcluir] = useState(null);
+    const [produtoNomeParaExcluir, setProdutoNomeParaExcluir] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalStyle, setModalStyle] = useState({});
 
     let emailLogado;
     if (token) {
@@ -30,19 +38,34 @@ function TabelaProdutos() {
         fetchProdutos();
     }, []);
 
+    const confirmarExclusao = (produto) => {
+        setProdutoIDParaExcluir(produto.produtoID);
+        setProdutoNomeParaExcluir(produto.produtoNome);
+        setModalMessage('Você tem certeza que deseja excluir este produto?');
+        setModalStyle({ backgroundColor: '#ffc107', color: 'black' });
+        setIsModalOpen(true);
+    };
+
     const deletarProduto = async (produtoID, produtoNome) => {
+        if (!produtoIDParaExcluir) return;
+
         try {
-            const data = await delProduct(produtoID, emailLogado, produtoNome);
+            const data = await delProduct(produtoIDParaExcluir, emailLogado, produtoNomeParaExcluir);
 
             if (data.sucess) {
-                alert('Produto excluído com sucesso!');
-                setProdutos(produtos.filter(produto => produto.produtoID !== produtoID));
+                setModalMessage('Produto excluído com sucesso!');
+                setModalStyle({ backgroundColor: '#83e509', color: 'white' });
+                setProdutos(produtos.filter(produto => produto.produtoID !== produtoIDParaExcluir));
             } else {
-                alert(data.message);
+                setModalMessage('Erro: ' + data.message);
+                setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
             }
         } catch (error) {
             console.error('Erro ao excluir produto:', error);
             alert('Erro ao excluir produto');
+        } finally {
+            setIsModalOpen(false);
+            setProdutoIDParaExcluir(null);
         }
     };
 
@@ -50,49 +73,67 @@ function TabelaProdutos() {
         navigate('/alterarProduto', { state: { produto } });
     }
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
-        <div>
-            <h1>Produtos Cadastrados</h1>
-            <table border={1}>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Quantidade</th>
-                        <th>Preço</th>
-                        <th>Imagem</th>
-                        <th>Fornecedor</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {produtos.map((produto) => (
-                        <tr key={produto.produtoID}>
-                            <td>{produto.produtoID}</td>
-                            <td>{produto.produtoNome}</td>
-                            <td>{produto.produtoQuantidade}</td>
-                            <td>{produto.produtoPreco}</td>
-                            <td>
-                                <img
-                                    src={`http://localhost:3001/uploads/${produto.produtoImagem}`}
-                                    alt={produto.produtoNome}
-                                    width="100"
-                                />
-                            </td>
-                            <td>{produto.fornecedorNome}</td>
-                            <td>
-                                <button onClick={() => deletarProduto(produto.produtoID, produto.produtoNome)}>
-                                    Excluir
-                                </button>
-                                <button onClick={() => editarProduto(produto)}>
-                                    Editar
-                                </button>
-                            </td>
+        <>
+            <Container>
+                <Title>Produtos Cadastrados</Title>
+                <Table border={1}>
+                    <thead>
+                        <tr>
+                            <Th>ID</Th>
+                            <Th>Nome</Th>
+                            <Th>Quantidade</Th>
+                            <Th>Preço</Th>
+                            <Th>Imagem</Th>
+                            <Th>Fornecedor</Th>
+                            <Th>Ação</Th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {produtos.map((produto) => (
+                            <tr key={produto.produtoID}>
+                                <Td>{produto.produtoID}</Td>
+                                <Td>{produto.produtoNome}</Td>
+                                <Td>{produto.produtoQuantidade}</Td>
+                                <Td>{produto.produtoPreco}</Td>
+                                <Td>
+                                    <img
+                                        src={`http://localhost:3001/uploads/${produto.produtoImagem}`}
+                                        alt={produto.produtoNome}
+                                        width="100"
+                                    />
+                                </Td>
+                                <Td>{produto.fornecedorNome}</Td>
+                                <Td>
+                                    <AcaoButton onClick={() => confirmarExclusao(produto)}>
+                                        Excluir
+                                    </AcaoButton>
+                                    <AcaoButton onClick={() => editarProduto(produto)}>
+                                        Editar
+                                    </AcaoButton>
+                                </Td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Container>
+
+            {isModalOpen && (
+                <ModalContainer>
+                    <ModalContent style={modalStyle}>
+                        <p>{modalMessage}</p>
+                        <div>
+                            <AcaoButton onClick={deletarProduto}>Confirmar</AcaoButton>
+                            <AcaoButton onClick={handleCloseModal}>Cancelar</AcaoButton>
+                        </div>
+                    </ModalContent>
+                </ModalContainer>
+            )}
+        </>
     );
 }
 

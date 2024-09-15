@@ -100,7 +100,7 @@ async function updateSuppliers(req, res) {
         await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ success: true, message: 'Fornecedor atualizado com sucesso' });
+            res.status(200).json({ sucess: true, message: 'Fornecedor atualizado com sucesso' });
         } else {
             res.status(404).json({ message: 'Fornecedor não encontrado' });
         }
@@ -133,17 +133,17 @@ async function deleteSupplier(req, res) {
         await connection.execute('INSERT INTO historico (historicoDescricao) VALUES (?)', [historico]);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ success: true, message: 'Fornecedor excluído com sucesso!' });
+            res.status(200).json({ sucess: true, message: 'Fornecedor excluído com sucesso!' });
         } else {
-            res.status(404).json({ success: false, message: 'Fornecedor não encontrado!' });
+            res.status(404).json({ sucess: false, message: 'Fornecedor não encontrado!' });
         }
     } catch (error) {
         console.error('Erro ao excluir fornecedor:', error);
 
         if (error.code === 'ER_ROW_IS_REFERENCED_2') {
-            res.status(409).json({ success: false, message: 'foreign key' });
+            res.status(409).json({ sucess: false, message: 'foreign key' });
         } else {
-            res.status(500).json({ success: false, message: 'Erro ao excluir fornecedor!' });
+            res.status(500).json({ sucess: false, message: 'Erro ao excluir fornecedor!' });
         }
     } finally {
         if (connection) connection.release();

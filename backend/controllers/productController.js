@@ -75,7 +75,7 @@ async function updateProduct(req, res) {
                 fs.unlink(imagePath, (err) => {
                     if (err) {
                         console.error("Erro ao excluir a imagem:", err);
-                        return res.status(500).json({ success: false, message: "Erro ao excluir a imagem!" });
+                        return res.status(500).json({ sucess: false, message: "Erro ao excluir a imagem!" });
                     }
                 });
             }
@@ -138,7 +138,7 @@ async function deleteProduct(req, res) {
         );
 
         if (rows.length === 0) {
-            return res.status(404).json({ success: false, message: "Produto não encontrado!" });
+            return res.status(404).json({ sucess: false, message: "Produto não encontrado!" });
         }
 
         const imageName = rows[0].produtoImagem;
@@ -157,17 +157,17 @@ async function deleteProduct(req, res) {
             fs.unlink(imagePath, (err) => {
                 if (err) {
                     console.error("Erro ao excluir a imagem:", err);
-                    return res.status(500).json({ success: false, message: "Erro ao excluir a imagem!" });
+                    return res.status(500).json({ sucess: false, message: "Erro ao excluir a imagem!" });
                 }
 
                 res.status(200).json({ sucess: true, message: "Produto e imagem excluídos com sucesso!" });
             });
         } else {
-            res.status(404).json({ success: false, message: "Produto não encontrado!" });
+            res.status(404).json({ sucess: false, message: "Produto não encontrado!" });
         }
     } catch (error) {
         console.error("Erro ao excluir produto:", error);
-        res.status(500).json({ success: false, message: "Erro ao excluir produto!" });
+        res.status(500).json({ sucess: false, message: "Erro ao excluir produto!" });
     } finally {
         if (connection) connection.release();
     }

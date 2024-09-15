@@ -59,7 +59,7 @@ function TabelaUsuario() {
                 setModalStyle({ backgroundColor: '#83e509', color: 'white' });
                 setUsuarios(usuarios.filter(usuario => usuario.usuarioID !== usuarioIDParaExcluir));
             } else {
-                setModalMessage(data.message);
+                setModalMessage('Erro: ' + data.message);
                 setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
             }
         } catch (error) {

@@ -11,7 +11,6 @@ function MFA() {
     const location = useLocation();
     const email = location.state?.email || '';
     const codigo = location.state?.codigo || '';
-    const [verifica, setVerifica] = useState('');
     // Estados separados para cada input
     const [input1, setInput1] = useState('');
     const [input2, setInput2] = useState('');
@@ -74,6 +73,7 @@ function MFA() {
                     <ShieldIcon>
                         <FaShieldAlt size={50} color="#ff0000" />
                     </ShieldIcon>
+                    <p style={{textAlign: 'center', paddingBottom: '10px'}}>Foi enviado para o email {email} um código de verificação</p>
                     <InputField>
                         <Input
                             type="text"

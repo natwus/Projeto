@@ -52,8 +52,8 @@ export const updateSupplier = async (fornecedorID, nome, estadoSelecionado, tele
     return response.json();
 };
 
-export const delSupplier = async (fornecedorID, emailLogado, fornecedorNome) => {
-    const response = await fetch(`${BASE_URL}/supplier/deleteSupplier/${fornecedorID}`, {
+export const delSupplier = async (fornecedorIDParaExcluir, emailLogado, fornecedorNome) => {
+    const response = await fetch(`${BASE_URL}/supplier/deleteSupplier/${fornecedorIDParaExcluir}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

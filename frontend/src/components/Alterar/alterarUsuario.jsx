@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getPermissoes, updateUser } from '../../services/userService';
 import useSessionTimeout from '../../hooks/useSessionTimeout';
 import { jwtDecode } from 'jwt-decode';
+import { FormContainer, FormTitle, Input, SubmitButton, Label, InputField, StyledForm, StyledOption, StyledSelect } from '../Style/FormStyle/formStyle';
+import { ModalContainer, ModalContent, CloseButton } from '../Style/ModalStyle/modalStyle';
 
 function EditarUsuario() {
     const navigate = useNavigate();
@@ -14,6 +16,9 @@ function EditarUsuario() {
     const [permissoes, setPermissoes] = useState([]);
     const [permissaoSelecionada, setPermissaoSelecionada] = useState(permissaoID || '')
     const token = localStorage.getItem('token');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalStyle, setModalStyle] = useState({});
 
     let emailLogado;
     if (token) {
@@ -43,10 +48,13 @@ function EditarUsuario() {
             const data = await updateUser(usuarioID, nome, email, senha || undefined, permissaoSelecionada, emailLogado);
 
             if (data.sucess) {
-                alert('Usuário atualizado com sucesso!');
-                navigate('/usuarios');
+                setModalMessage('Usuário atualizado com sucesso!');
+                setModalStyle({ backgroundColor: '#83e509', color: 'white' });
+                setIsModalOpen(true);
             } else {
-                alert(data.message);
+                setModalMessage('Erro: ' + data.message);
+                setModalStyle({ backgroundColor: '#ff0000', color: 'white' });
+                setIsModalOpen(true);
             }
         } catch (error) {
             console.error(error);
@@ -54,46 +62,73 @@ function EditarUsuario() {
         }
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        if (modalStyle.backgroundColor === '#83e509') {
+            navigate('/usuarios');
+        }
+    };
+
     return (
-        <div>
-            <h1>Editar Usuário</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Nome:</label>
-                <input
-                    type="text"
-                    name="usuarioNome"
-                    defaultValue={usuarioNome}
-                    onChange={(e) => setNome(e.target.value)}
-                />
-                <label>Email:</label>
-                <input
-                    type="email"
-                    name="usuarioUsuario"
-                    defaultValue={usuarioUsuario}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <label>Senha:</label>
-                <input
-                    type="password"
-                    name="usuarioSenha"
-                    onChange={(e) => setSenha(e.target.value)}
-                />
-                <label>Permissão:</label>
-                <select
-                    name="permissao"
-                    value={permissaoSelecionada}
-                    onChange={(e) => setPermissaoSelecionada(e.target.value)}
-                >
-                    <option value="">Selecione a permissão</option>
-                    {permissoes.map((permissao) => (
-                        <option key={permissao.permissaoID} value={permissao.permissaoID}>
-                            {permissao.permissaoNome}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Salvar</button>
-            </form>
-        </div>
+        <>
+            <FormContainer>
+                <FormTitle>Editar Usuário</FormTitle>
+                <StyledForm onSubmit={handleSubmit}>
+                    <InputField>
+                        <Input
+                            type="text"
+                            name="usuarioNome"
+                            defaultValue={usuarioNome}
+                            onChange={(e) => setNome(e.target.value)}
+                        />
+                        <Label htmlFor='nome'>Nome:</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="email"
+                            name="usuarioUsuario"
+                            defaultValue={usuarioUsuario}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <Label htmlFor='email'>Email:</Label>
+                    </InputField>
+
+                    <InputField>
+                        <Input
+                            type="password"
+                            name="usuarioSenha"
+                            onChange={(e) => setSenha(e.target.value)}
+                        />
+                        <Label htmlFor='senha'>Senha:</Label>
+                    </InputField>
+
+                    <Label>Permissão:</Label>
+                    <StyledSelect
+                        name="permissao"
+                        value={permissaoSelecionada}
+                        onChange={(e) => setPermissaoSelecionada(e.target.value)}
+                    >
+                        <StyledOption value="">Selecione a permissão</StyledOption>
+                        {permissoes.map((permissao) => (
+                            <StyledOption key={permissao.permissaoID} value={permissao.permissaoID}>
+                                {permissao.permissaoNome}
+                            </StyledOption>
+                        ))}
+                    </StyledSelect>
+                    <SubmitButton type="submit">Salvar</SubmitButton>
+                </StyledForm>
+            </FormContainer>
+
+            {isModalOpen && (
+                <ModalContainer>
+                    <ModalContent style={modalStyle}>
+                        <p>{modalMessage}</p>
+                        <CloseButton onClick={handleCloseModal}>Fechar</CloseButton>
+                    </ModalContent>
+                </ModalContainer>
+            )}
+        </>
     );
 }
 
